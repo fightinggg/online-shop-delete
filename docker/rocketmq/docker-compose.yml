@@ -1,0 +1,23 @@
+version: '2'
+services:
+  rocketmq:
+    environment:
+      MAX_POSSIBLE_HEAP: 100000000
+    image: "rocketmqinc/rocketmq"
+    restart: always
+    # volumes:
+    ports:
+      - "9876:9876"
+    command: 
+      - "sh"
+      - "mqnamesrv"
+  rocketmq-console-ng:
+    image: "styletang/rocketmq-console-ng"
+    environment:
+      JAVA_OPTS: -Drocketmq.namesrv.addr=rocketmq:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false
+    ports:
+      - "9000:8080"
+  # docker run -e "JAVA_OPTS=-Drocketmq.namesrv.addr=localhost:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false" -p 9000:8080 -t/rocketmq-console-ng
+
+
+# docker run -d -p 9876:9876 --name mqnamesrv -e "MAX_POSSIBLE_HEAP=100000000" rocketmqinc/rocketmq sh mqnamesrv

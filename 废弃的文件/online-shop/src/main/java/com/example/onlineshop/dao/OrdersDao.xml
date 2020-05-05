@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.onlineshop.dao.OrdersDao">
+    <resultMap id="BaseResultMap" type="com.example.onlineshop.entity.Orders" >
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="buyerId" property="buyerid" jdbcType="INTEGER" />
+        <result column="goodsId" property="goodsid" jdbcType="INTEGER" />
+        <result column="addressid" property="addressid" jdbcType="INTEGER" />
+        <result column="counts" property="counts" jdbcType="INTEGER" />
+        <result column="state" property="state" jdbcType="CHAR" />
+    </resultMap>
+    <select id="selectByBuyerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * from orders where buyerId = #{id}
+    </select>
+    <select id="selectBySellerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * from orders as o,goods as g where o.goodsId=g.id and g.sellerId = #{id}
+    </select>
+</mapper>
