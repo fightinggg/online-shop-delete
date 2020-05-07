@@ -14,7 +14,7 @@ public class OrdersController {
     // 添加订单
     @PostMapping("/buyer/{buyerId}")
     public String post(@PathVariable int buyerId, @RequestBody Orders orders) {
-        return JSON.toJSONString(ordersService.localpost(orders));
+        return JSON.toJSONString(ordersService.post(buyerId, orders));
     }
 
     // 取消订单
@@ -31,12 +31,13 @@ public class OrdersController {
 
     // 查看订单
     @GetMapping("buyer/{buyerId}")
-    public String get(@PathVariable int buyerId){
+    public String get(@PathVariable int buyerId) {
         return JSON.toJSONString(ordersService.buyerget(buyerId));
     }
+
     // 查看订单
     @GetMapping("seller/{sellerId}")
-    public String sellerGet(@PathVariable int sellerId){
+    public String sellerGet(@PathVariable int sellerId) {
         return JSON.toJSONString(ordersService.sellerGet(sellerId));
     }
 }

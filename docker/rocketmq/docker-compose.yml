@@ -8,6 +8,7 @@ services:
     # volumes:
     ports:
       - "9876:9876"
+      - "10911:10911"
     command: 
       - "sh"
       - "mqnamesrv"

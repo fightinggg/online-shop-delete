@@ -1,6 +1,7 @@
 package com.shop.goods.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.shop.goods.entity.Goods;
 import com.shop.goods.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,13 @@ public class GoodsController {
 
     // 查询商品
     @GetMapping("/everyone/null/{pageBegin}/{perpage}")
+    @HystrixCommand(fallbackMethod = "getFallback")
     public String get(@PathVariable int pageBegin, @PathVariable int perpage) {
         return JSON.toJSONString(goodsService.get(pageBegin, perpage));
+    }
+    // 查询熔断
+    public String getFallback(int pageBegin, int perpage) {
+        return JSON.toJSONString("当前访问的人似乎有点多，请稍后再访问[服务熔断]");
     }
 }
 

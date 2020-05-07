@@ -3,7 +3,6 @@ package com.shop.orders.service;
 import com.alibaba.fastjson.JSON;
 import com.shop.orders.dao.*;
 import com.shop.orders.entity.*;
-import com.shop.orders.message.OrdersMsg;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OrdersService {
@@ -25,52 +25,55 @@ public class OrdersService {
     GoodsDao goodsDao;
     @Autowired
     GoodscountsDao goodscountsDao;
-//    @Autowired
-//    RocketMQTemplate rocketMQTemplate;
+    @Autowired
+    RocketMQTemplate rocketMQTemplate;
 
-//    // 添加订单！ 事务管理
-//    @Transactional
-//    public String post(int buyerid, Orders orders) {
-//        // 验证权限
-//        if (buyerid != orders.getBuyerid()) return "失败";
-//        // 分布式事务
-//        // 创建一个事务id，作为消息内容发到mq
-//        OrdersMsg ordersMsg = new OrdersMsg();
-//
-//        String jsonString = JSON.toJSONString(ordersMsg);
-//        //生成message类型
-//        Message<String> message = MessageBuilder.withPayload(jsonString).build();
-//        //发送一条事务消息
-//        /*
-//          String txProducerGroup 生产组
-//          String destination topic，
-//          Message<?> message, 消息内容
-//          Object arg 参数
-//         */
-//        rocketMQTemplate.sendMessageInTransaction("producer_group_txmsg_bank1", "topic_txmsg", message, null);
-//        return "成功";
-//    }
+    // 添加订单！ 事务管理
+    @Transactional
+    public String post(int buyerid, Orders orders) {
+        // 验证权限
+        if (buyerid != orders.getBuyerid()) return "失败";
+        // 分布式事务启动
+        // 创建一个事务消息
+        // TODO
+        orders.setId((int) System.currentTimeMillis());
+        String jsonString = JSON.toJSONString(orders);
+        //生成message类型
+        Message<String> message = MessageBuilder.withPayload(jsonString).build();
+        //发送一条事务消息
+        /*
+          String txProducerGroup 生产组
+          String destination topic，
+          Message<?> message, 消息内容
+          Object arg 参数
+         */
+        rocketMQTemplate.sendMessageInTransaction("orderProducer", "addOrder:hi", message, null);
+        return "成功";
+    }
 
     @Transactional
-    public String localpost(Orders orders) {
-        // 本地事务
+    public void localpost(Orders orders) {
+        // 查询
         Buyermoney buyermoney = buyermoneyDao.selectByPrimaryKey(orders.getBuyerid());
         Goods goods = goodsDao.selectByPrimaryKey(orders.getGoodsid());
         Goodscounts goodscounts = goodscountsDao.selectByPrimaryKey(orders.getGoodsid());
         Sellermoney sellermoney = sellermoneyDao.selectByPrimaryKey(goods.getSellerid());
 
+        // 计算
         int count = orders.getCounts();
         int cost = goods.getPrice() * count;
 
+        // 修改
         buyermoney.setMoney(buyermoney.getMoney() - cost);
         goodscounts.setCounts(goodscounts.getCounts() - count);
         sellermoney.setMoney(sellermoney.getMoney() + cost);
+
+        // 执行
         buyermoneyDao.updateByPrimaryKeySelective(buyermoney);
         goodscountsDao.updateByPrimaryKeySelective(goodscounts);
         sellermoneyDao.updateByPrimaryKeySelective(sellermoney);
-
         ordersDao.insertSelective(orders);
-        return "successed";
+
     }
 
     // 移除订单！ 事务管理
@@ -111,5 +114,9 @@ public class OrdersService {
 
     public List<Orders> sellerGet(int sellerId) {
         return ordersDao.selectBySellerId(sellerId);
+    }
+
+    public Orders get(Integer id) {
+        return ordersDao.selectByPrimaryKey(id);
     }
 }

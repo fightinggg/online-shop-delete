@@ -4,15 +4,45 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
 
-# 配置中心
+server:
+  port: 8080
 spring:
-  cloud:
-    config:
-      name: zuulApplication
-      profile: dev
-      label: master
-      discovery:
-        service-id: server-config
-        enabled: true
+  application:
+    name: api-geteway
+  session:
+    store-type: redis
+    timeout: 3600s
+    redis:
+      flush-mode: on_save
+      namespace: spring:session
+  redis:
+    host: localhost
+    port: 6379
+    timeout: 5000ms
 
-
+zuul:
+  routes:
+    #标识你服务的名字，这里可以自己定义，一般方便和规范来讲还是跟自己服务的名字一样
+    service-buyer:
+      #服务映射的路径，通过这路径就可以从外部访问你的服务了，目的是为了不爆露你机器的IP，面向服务的路由了，给你选一个可用的出来，
+      #这里zuul是自动依赖hystrix，ribbon的，不是面向单机
+      path: /service-buyer/**
+      #这里一定要是你Eureka注册中心的服务的名称，是所以这里配置serviceId因为跟eureka结合了，如果单独使用zuul,那么就必须写自己机器的IP了，
+      #如url:http://localhost:8080/  这样的不好就是写死IP了，万一这IP挂了，这高可用性，服务注册那套东西就用不起来了
+      serviceId: service-buyer
+      sensitiveHeaders: /*
+    service-seller:
+      path: /service-seller/**
+      serviceId: service-seller
+      sensitiveHeaders: /*
+    service-goods:
+      path: /service-goods/**
+      serviceId: service-goods
+      sensitiveHeaders: /*
+    service-orders:
+      path: /service-orders/**
+      serviceId: service-orders
+      sensitiveHeaders: /*
+  host:
+    socket-timeout-millis: 6000
+    connect-timeout-millis: 10000

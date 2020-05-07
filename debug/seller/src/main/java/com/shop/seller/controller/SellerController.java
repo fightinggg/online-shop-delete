@@ -6,11 +6,25 @@ import com.shop.seller.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+
 
 @RestController
 public class SellerController {
     @Autowired
     SellerService sellerService;
+
+    // 登陆
+    @PostMapping("/everyone/null/{sellerId}/login")
+    public String postLogin(@PathVariable int sellerId, @RequestBody int password, HttpSession httpSession) {
+        Seller seller = sellerService.get(sellerId);
+        if (seller.getPassword() != password) {
+            return JSON.toJSONString("密码错误");
+        } else {
+            httpSession.setAttribute("seller", String.valueOf(sellerId));
+            return JSON.toJSONString("登陆成功");
+        }
+    }
 
     // 查看账号信息
     @GetMapping("/seller/{sellerId}")
