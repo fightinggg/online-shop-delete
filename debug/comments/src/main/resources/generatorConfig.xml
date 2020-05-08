@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+    <context id="testTables" targetRuntime="MyBatis3">
+        <jdbcConnection
+                driverClass="com.mysql.cj.jdbc.Driver"
+                connectionURL="jdbc:mysql://localhost:3306/shop?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false"
+                userId="root"
+                password="123456">
+<!--            设置为 true 可以获取 tables 信息, 解决生成文件缺少 xxxByPrimaryKey 的问题 -->
+            <property name="useInformationSchema" value="true"/>
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="com.shop.integral.entity"
+                            targetProject="./integral/src/main/java"></javaModelGenerator>
+        <sqlMapGenerator targetPackage="com.shop.integral.mapper"
+                         targetProject="./integral/src/main/java"></sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.shop.integral.mapper"
+                             targetProject="./integral/src/main/java"></javaClientGenerator>
+<!--        <table tableName="buyer">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="integralTransaction" domainObjectName="IntegralTransaction"></table>-->
+<!--        <table tableName="orders">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+<!--        <table tableName="buyerIntegral" domainObjectName="BuyerIntegral"></table>-->
+        <table tableName="comments"></table>
+    </context>
+</generatorConfiguration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

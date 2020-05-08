@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface GoodsDao extends GoodsMapper {
     List<Goods> selectByPage(int pageBegin, int perPage);
+
+    List<Goods> selectByPageAndCategory(String category, int pageBegin, int perpage);
 }

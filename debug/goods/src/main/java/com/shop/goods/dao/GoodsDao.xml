@@ -15,4 +15,11 @@
         from goods limit ${pageBegin} , ${perPage}
     </select>
 
+    <select id="selectByPageAndCategory" resultMap="BaseResultMap">
+        select *
+        from goods
+        where category = ${category} limit ${pageBegin}
+            , ${perPage}
+    </select>
+
 </mapper>

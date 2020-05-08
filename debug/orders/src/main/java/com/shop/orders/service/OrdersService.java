@@ -29,7 +29,6 @@ public class OrdersService {
     RocketMQTemplate rocketMQTemplate;
 
     // 添加订单！ 事务管理
-    @Transactional
     public String post(int buyerid, Orders orders) {
         // 验证权限
         if (buyerid != orders.getBuyerid()) return "失败";

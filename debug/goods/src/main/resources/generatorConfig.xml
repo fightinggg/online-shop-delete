@@ -20,5 +20,8 @@
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
         <table tableName="goodsCounts"></table>
+        <table tableName="goodsDescribe" domainObjectName="GoodsDescribe">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+        </table>
     </context>
 </generatorConfiguration>

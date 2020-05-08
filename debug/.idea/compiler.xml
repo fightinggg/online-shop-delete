@@ -8,28 +8,34 @@
         <outputRelativeToContentRoot value="true" />
         <module name="zuul" />
         <module name="eureka-server" />
+        <module name="phone" />
         <module name="buyer" />
-        <module name="utils" />
+        <module name="comments" />
         <module name="seller" />
         <module name="goods" />
         <module name="email" />
+        <module name="integral" />
         <module name="orders" />
         <module name="config" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="auth" target="1.8" />
+      <module name="utils" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth" options="-parameters" />
       <module name="buyer" options="-parameters" />
+      <module name="comments" options="-parameters" />
       <module name="config" options="-parameters" />
       <module name="email" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="goods" options="-parameters" />
+      <module name="integral" options="-parameters" />
       <module name="orders" options="-parameters" />
+      <module name="phone" options="-parameters" />
       <module name="seller" options="-parameters" />
       <module name="utils" options="" />
       <module name="zuul" options="-parameters" />

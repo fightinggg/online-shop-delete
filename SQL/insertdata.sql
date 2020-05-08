@@ -14,11 +14,11 @@ from seller;
 delete
 from buyer;
 
-insert into buyer(id, password, name, sex, birthday, phonenum, email, rate, integral)
-    value (11, 11, 'buyer1', 'man', '2020-05-01', 1808669868, '18086698682@email', 0, 0);
+insert into buyer(id, password, name, sex, birthday, phonenum, email, rate)
+    value (11, 11, 'buyer1', 'man', '2020-05-01', 1808669868, '18086698682@email', 0);
 
-insert into buyer(id, password, name, sex, birthday, phonenum, email, rate, integral)
-    value (12, 12, 'buyer2', 'man', '2020-05-01', 1808669868, '18086698682@email', 0, 0);
+insert into buyer(id, password, name, sex, birthday, phonenum, email, rate)
+    value (12, 12, 'buyer2', 'man', '2020-05-01', 1808669868, '18086698682@email', 0);
 insert into buyerMoney(id, money) value (11, 100);
 insert into buyerMoney(id, money) value (12, 100);
 

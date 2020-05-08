@@ -18,7 +18,6 @@ public class OrderListener implements RocketMQLocalTransactionListener {
     OrdersService ordersService;
 
     @Override
-    @Transactional
     public RocketMQLocalTransactionState executeLocalTransaction(Message message, Object o) {
         try {
             System.out.println("exec transaction add order");
