@@ -7,5 +7,23 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="mongodb" uuid="6c967767-e633-4f12-bdd3-09febbc66344">
+      <driver-ref>mongo</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb://localhost:27017</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="mysql_remote" uuid="64bac57f-f093-43d5-8028-4486d4e0f338">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://121.199.76.43:3306</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="mongodb_remote" uuid="f7ea3dc3-435d-4dfd-bf60-6568e9d97f10">
+      <driver-ref>mongo</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb://121.199.76.43:27017</jdbc-url>
+    </data-source>
   </component>
 </project>

@@ -19,13 +19,27 @@ public class BuyerController {
     @PostMapping("/everyone/null/{buyerId}/login")
     public String postlogin(@PathVariable int buyerId, @RequestBody int password, HttpSession httpSession) {
         Buyer buyer = buyerService.get(buyerId);
-        if (buyer.getPassword() != password) {
-            return JSON.toJSONString("密码错误");
+        if (buyer==null || buyer.getPassword() != password) {
+            return JSON.toJSONString("登陆失败");
         } else {
             httpSession.setAttribute("buyer", String.valueOf(buyerId));
             return JSON.toJSONString("登陆成功");
         }
     }
+
+    // 注册账号
+    @PostMapping("/everyone/null")
+    public String post(@RequestBody Buyer buyer) {
+        return JSON.toJSONString(buyerService.post(buyer));
+    }
+
+
+    // 查询账号是否可用
+    @GetMapping("/everyone/null/{buyerId}/is/effective")
+    public String getBuyerIdIsEffective(@PathVariable int buyerId){
+        return JSON.toJSONString(buyerService.isEffective(buyerId));
+    }
+
 
     // 查看账号信息
     @GetMapping("/buyer/{buyerId}")
@@ -46,11 +60,6 @@ public class BuyerController {
         else return JSON.toJSONString(buyerService.put(buyer));
     }
 
-    // 注册账号
-    @PostMapping("/everyone/null")
-    public String post(@RequestBody Buyer buyer) {
-        return JSON.toJSONString(buyerService.post(buyer));
-    }
 
     // 充值
     @PutMapping("/buyer/{buyerId}/addmoney/{money}")

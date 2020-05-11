@@ -2,12 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shop.goods.dao.GoodsDao">
     <resultMap id="BaseResultMap" type="com.shop.goods.entity.Goods">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="sellerId" jdbcType="INTEGER" property="sellerid"/>
-        <result column="price" jdbcType="INTEGER" property="price"/>
-        <result column="category" jdbcType="VARCHAR" property="category"/>
-        <result column="salevol" jdbcType="INTEGER" property="salevol"/>
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="sellerId" jdbcType="INTEGER" property="sellerid" />
+        <result column="price" jdbcType="INTEGER" property="price" />
+        <result column="category" jdbcType="VARCHAR" property="category" />
+        <result column="salevol" jdbcType="INTEGER" property="salevol" />
+        <result column="mainURL" jdbcType="VARCHAR" property="mainurl" />
+        <result column="mainDescribe" jdbcType="VARCHAR" property="maindescribe" />
     </resultMap>
 
     <select id="selectByPage" parameterType="java.lang.Integer" resultMap="BaseResultMap">

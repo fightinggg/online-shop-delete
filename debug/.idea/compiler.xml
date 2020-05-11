@@ -7,20 +7,23 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="zuul" />
-        <module name="eureka-server" />
+        <module name="uid" />
         <module name="phone" />
-        <module name="buyer" />
-        <module name="comments" />
+        <module name="email" />
+        <module name="eureka" />
+        <module name="file" />
         <module name="seller" />
         <module name="goods" />
-        <module name="email" />
-        <module name="integral" />
         <module name="orders" />
+        <module name="integral" />
         <module name="config" />
+        <module name="comments" />
+        <module name="buyer" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="auth" target="1.8" />
+      <module name="eureka-server" target="1.8" />
       <module name="utils" target="1.5" />
     </bytecodeTargetLevel>
   </component>
@@ -31,12 +34,15 @@
       <module name="comments" options="-parameters" />
       <module name="config" options="-parameters" />
       <module name="email" options="-parameters" />
+      <module name="eureka" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
+      <module name="file" options="-parameters" />
       <module name="goods" options="-parameters" />
       <module name="integral" options="-parameters" />
       <module name="orders" options="-parameters" />
       <module name="phone" options="-parameters" />
       <module name="seller" options="-parameters" />
+      <module name="uid" options="-parameters" />
       <module name="utils" options="" />
       <module name="zuul" options="-parameters" />
     </option>

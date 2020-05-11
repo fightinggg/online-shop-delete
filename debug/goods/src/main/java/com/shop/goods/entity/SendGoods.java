@@ -1,26 +1,16 @@
 package com.shop.goods.entity;
 
-import java.util.ArrayList;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class SendGoods {
-
-    Goods goods;
-    private List<GoodsDescribe> goodsDescribes;
-
-    SendGoods(Goods goods,  List<GoodsDescribe> goodsDescribes) {
-        this.goods=goods;
-        this.goodsDescribes = goodsDescribes;
-
-    }
-
-
-    public Goods getGoods() {
-        return goods;
-    }
-
-    public List<GoodsDescribe> getGoodsDescribes() {
-        return goodsDescribes;
-    }
+    private Goods goods;
+    private List<ImageNameAndDescribe> imageNameAndDescribes;
 }

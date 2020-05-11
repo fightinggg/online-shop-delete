@@ -11,4 +11,6 @@ public interface GoodsDao extends GoodsMapper {
     List<Goods> selectByPage(int pageBegin, int perPage);
 
     List<Goods> selectByPageAndCategory(String category, int pageBegin, int perpage);
+
+    List<Goods> selectBySellerId(int sellerId, int pageBegin, int perpage);
 }

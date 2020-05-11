@@ -1,0 +1,18 @@
+minio:
+  url: http://127.0.0.1:9000
+  accessKey: admin
+  secretKey: admin123456
+  bucketName: shop
+
+
+server:
+  port: 8090
+
+spring:
+  application:
+    name: service-file
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

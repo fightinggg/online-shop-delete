@@ -33,7 +33,7 @@ public class MyFilter extends ZuulFilter {
         String userId = requestPath[3];
         // 不拦截任意访问
 
-        if (userType.equals("everyone")) return null;
+        if (userType.equals("everyone") || userType.equals("MicroServiceInner")) return null;
         else {
             HttpSession session = request.getSession();
 //            System.out.println(session.getId());

@@ -57,4 +57,9 @@ public class BuyerService {
         buyermoney.setMoney(buyermoney.getMoney() + money);
         return buyermoneyDao.updateByPrimaryKey(buyermoney);
     }
+
+    public boolean isEffective(int buyerId) {
+        Buyer buyer = buyerDao.selectByPrimaryKey(buyerId);
+        return buyer==null;
+    }
 }

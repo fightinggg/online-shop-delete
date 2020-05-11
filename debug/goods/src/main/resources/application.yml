@@ -9,6 +9,19 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:
+#      uri: mongodb://zzq:123456@localhost:27017/admin
+      uri: mongodb://localhost:27017/shop
+
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
 
 
 eureka:
@@ -22,3 +35,4 @@ logging:
     com:
       example:
         mapper : debug
+

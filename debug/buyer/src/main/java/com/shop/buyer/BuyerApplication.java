@@ -8,7 +8,9 @@ import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
-@SpringCloudApplication // SpringBootApplication EnableDiscoveryClient EnableCircuitBreaker
+@SpringBootApplication
+@EnableDiscoveryClient
+@EnableCircuitBreaker
 @MapperScan({"com.shop.buyer.dao", "com.shop.buyer.mapper"})
 @EnableRedisHttpSession
 public class BuyerApplication {
