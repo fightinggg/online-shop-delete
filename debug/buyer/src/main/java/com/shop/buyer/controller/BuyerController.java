@@ -15,29 +15,17 @@ public class BuyerController {
     @Autowired
     BuyerService buyerService;
 
-    // 登陆账号
-    @PostMapping("/everyone/null/{buyerId}/login")
-    public String postlogin(@PathVariable int buyerId, @RequestBody int password, HttpSession httpSession) {
-        Buyer buyer = buyerService.get(buyerId);
-        if (buyer==null || buyer.getPassword() != password) {
-            return JSON.toJSONString("登陆失败");
-        } else {
-            httpSession.setAttribute("buyer", String.valueOf(buyerId));
-            return JSON.toJSONString("登陆成功");
-        }
-    }
-
     // 注册账号
-    @PostMapping("/everyone/null")
+    @PostMapping("/register")
     public String post(@RequestBody Buyer buyer) {
         return JSON.toJSONString(buyerService.post(buyer));
     }
 
 
     // 查询账号是否可用
-    @GetMapping("/everyone/null/{buyerId}/is/effective")
-    public String getBuyerIdIsEffective(@PathVariable int buyerId){
-        return JSON.toJSONString(buyerService.isEffective(buyerId));
+    @GetMapping("/id_is_effective/{id}")
+    public String getBuyerIdIsEffective(@PathVariable int id){
+        return JSON.toJSONString(buyerService.isEffective(id));
     }
 
 

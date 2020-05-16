@@ -6,30 +6,36 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="zuul" />
-        <module name="uid" />
-        <module name="phone" />
-        <module name="email" />
-        <module name="eureka" />
         <module name="file" />
-        <module name="seller" />
+        <module name="phone" />
+        <module name="gateway" />
+        <module name="email" />
         <module name="goods" />
         <module name="orders" />
-        <module name="integral" />
+        <module name="user" />
+        <module name="uid" />
+        <module name="zuul" />
+        <module name="eureka" />
         <module name="config" />
         <module name="comments" />
+        <module name="authority" />
         <module name="buyer" />
+        <module name="integral" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="auth" target="1.8" />
       <module name="eureka-server" target="1.8" />
+      <module name="seller" target="1.8" />
+      <module name="uid-dao" target="1.8" />
+      <module name="uit2mysql" target="1.8" />
       <module name="utils" target="1.5" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="auth" options="-parameters" />
+      <module name="authority" options="-parameters" />
       <module name="buyer" options="-parameters" />
       <module name="comments" options="-parameters" />
       <module name="config" options="-parameters" />
@@ -37,12 +43,16 @@
       <module name="eureka" options="-parameters" />
       <module name="eureka-server" options="-parameters" />
       <module name="file" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="goods" options="-parameters" />
       <module name="integral" options="-parameters" />
       <module name="orders" options="-parameters" />
       <module name="phone" options="-parameters" />
       <module name="seller" options="-parameters" />
       <module name="uid" options="-parameters" />
+      <module name="uid-dao" options="-parameters" />
+      <module name="uit2mysql" options="-parameters" />
+      <module name="user" options="-parameters" />
       <module name="utils" options="" />
       <module name="zuul" options="-parameters" />
     </option>

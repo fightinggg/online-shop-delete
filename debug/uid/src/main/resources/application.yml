@@ -1,0 +1,35 @@
+server:
+  port: 8091
+
+spring:
+  application:
+    name: service-uid
+  datasource:
+    url: jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      # 失败重试
+      retries: 1
+      # 批量发送的数量
+      batch-size: 16384
+      buffer-memory: 33554432
+      # 序列化方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+
+kafka:
+  uid:
+    topic: uidTopic
+
+
+#showSql
+logging:
+  level:
+    com:
+      example:
+        mapper : debug

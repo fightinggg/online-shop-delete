@@ -8,7 +8,6 @@
         <option value="$PROJECT_DIR$/buyer/pom.xml" />
         <option value="$PROJECT_DIR$/zuul/pom.xml" />
         <option value="$PROJECT_DIR$/oauth2/pom.xml" />
-        <option value="$PROJECT_DIR$/seller/pom.xml" />
         <option value="$PROJECT_DIR$/goods/pom.xml" />
         <option value="$PROJECT_DIR$/orders/pom.xml" />
         <option value="$PROJECT_DIR$/email/pom.xml" />
@@ -19,6 +18,9 @@
         <option value="$PROJECT_DIR$/file/pom.xml" />
         <option value="$PROJECT_DIR$/eureka/pom.xml" />
         <option value="$PROJECT_DIR$/uid/pom.xml" />
+        <option value="$PROJECT_DIR$/authority/pom.xml" />
+        <option value="$PROJECT_DIR$/user/pom.xml" />
+        <option value="$PROJECT_DIR$/gateway/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
