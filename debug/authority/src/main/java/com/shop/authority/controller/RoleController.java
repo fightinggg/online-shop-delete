@@ -12,13 +12,13 @@ public class RoleController {
     RoleService roleService;
 
     // 查询角色
-    @GetMapping("/search_role/{pageBegin}/{perPage}")
+    @GetMapping("/role/{pageBegin}/{perPage}")
     String search(@PathVariable int pageBegin, @PathVariable int perPage) {
         return JSON.toJSONString(roleService.search(pageBegin,perPage));
     }
 
     // 增加角色
-    @PostMapping("/insert_role")
+    @PostMapping("/role")
     String insert(@RequestBody Role role) {
         return JSON.toJSONString(roleService.insert(role));
     }

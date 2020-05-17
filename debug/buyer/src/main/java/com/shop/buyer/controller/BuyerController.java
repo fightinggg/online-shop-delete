@@ -21,13 +21,11 @@ public class BuyerController {
         return JSON.toJSONString(buyerService.post(buyer));
     }
 
-
     // 查询账号是否可用
-    @GetMapping("/id_is_effective/{id}")
+    @GetMapping("/id/is/effective/{id}")
     public String getBuyerIdIsEffective(@PathVariable int id){
         return JSON.toJSONString(buyerService.isEffective(id));
     }
-
 
     // 查看账号信息
     @GetMapping("/buyer/{buyerId}")
@@ -47,7 +45,6 @@ public class BuyerController {
         if (!buyer.getId().equals(buyerId)) return JSON.toJSONString("error");
         else return JSON.toJSONString(buyerService.put(buyer));
     }
-
 
     // 充值
     @PutMapping("/buyer/{buyerId}/addmoney/{money}")

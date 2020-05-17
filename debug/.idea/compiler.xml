@@ -15,6 +15,7 @@
         <module name="user" />
         <module name="uid" />
         <module name="zuul" />
+        <module name="common" />
         <module name="eureka" />
         <module name="config" />
         <module name="comments" />
@@ -38,6 +39,7 @@
       <module name="authority" options="-parameters" />
       <module name="buyer" options="-parameters" />
       <module name="comments" options="-parameters" />
+      <module name="common" options="-parameters" />
       <module name="config" options="-parameters" />
       <module name="email" options="-parameters" />
       <module name="eureka" options="-parameters" />
