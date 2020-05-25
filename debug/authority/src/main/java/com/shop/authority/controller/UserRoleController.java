@@ -12,22 +12,22 @@ public class UserRoleController {
     @Autowired
     UserRoleService userRoleService;
 
-    @GetMapping("/user_have_what_role/{userId}")
+    @GetMapping("/user/have/what/role/{userId}")
     String user_have_what_role(@PathVariable int userId){
         return JSON.toJSONString(userRoleService.user_have_what_role(userId));
     }
 
-    @GetMapping("/role_have_what_user/{roleId}")
+    @GetMapping("/role/have/what/user/{roleId}")
     String role_have_what_user(@PathVariable int roleId){
         return JSON.toJSONString(userRoleService.role_have_what_user(roleId));
     }
 
-    @PostMapping("/insert_user_role")
+    @PostMapping("/user/role")
     String insert_user_role(@RequestBody UserRole userRole){
         return JSON.toJSONString(userRoleService.insert_user_role(userRole));
     }
 
-    @DeleteMapping("/delete_user_role/{id}")
+    @DeleteMapping("/user/role/{id}")
     String delete_user_role(@PathVariable int id){
         return JSON.toJSONString(userRoleService.delete_user_role(id));
     }

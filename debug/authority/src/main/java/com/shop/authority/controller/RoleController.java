@@ -3,6 +3,7 @@ package com.shop.authority.controller;
 import com.alibaba.fastjson.JSON;
 import com.shop.authority.entity.Role;
 import com.shop.authority.service.RoleService;
+import com.shop.common.annotation.ResponseEncode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,25 +14,29 @@ public class RoleController {
 
     // 查询角色
     @GetMapping("/role/{pageBegin}/{perPage}")
-    String search(@PathVariable int pageBegin, @PathVariable int perPage) {
-        return JSON.toJSONString(roleService.search(pageBegin,perPage));
+    @ResponseEncode
+    Object search(@PathVariable int pageBegin, @PathVariable int perPage) {
+        return roleService.search(pageBegin, perPage);
     }
 
     // 增加角色
     @PostMapping("/role")
-    String insert(@RequestBody Role role) {
-        return JSON.toJSONString(roleService.insert(role));
+    @ResponseEncode
+    Object insert(@RequestBody Role role) {
+        return roleService.insert(role);
     }
 
     // 修改角色
-    @PutMapping("/update_role")
-    String update(@RequestBody Role role) {
-        return JSON.toJSONString(roleService.update(role));
+    @PutMapping("/role")
+    @ResponseEncode
+    Object update(@RequestBody Role role) {
+        return roleService.update(role);
     }
 
     // 删除角色
-    @DeleteMapping("/erase_role/{roleId}")
-    String erase(@PathVariable int roleId) {
-        return JSON.toJSONString(roleService.erase(roleId));
+    @DeleteMapping("/role/{roleId}")
+    @ResponseEncode
+    Object erase(@PathVariable int roleId) {
+        return roleService.erase(roleId);
     }
 }

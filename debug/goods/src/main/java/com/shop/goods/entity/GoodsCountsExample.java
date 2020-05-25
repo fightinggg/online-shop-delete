@@ -223,6 +223,66 @@ public class GoodsCountsExample {
             addCriterion("counts not between", value1, value2, "counts");
             return (Criteria) this;
         }
+
+        public Criteria andGlobalIdIsNull() {
+            addCriterion("global_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdIsNotNull() {
+            addCriterion("global_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdEqualTo(Long value) {
+            addCriterion("global_id =", value, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdNotEqualTo(Long value) {
+            addCriterion("global_id <>", value, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdGreaterThan(Long value) {
+            addCriterion("global_id >", value, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdGreaterThanOrEqualTo(Long value) {
+            addCriterion("global_id >=", value, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdLessThan(Long value) {
+            addCriterion("global_id <", value, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdLessThanOrEqualTo(Long value) {
+            addCriterion("global_id <=", value, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdIn(List<Long> values) {
+            addCriterion("global_id in", values, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdNotIn(List<Long> values) {
+            addCriterion("global_id not in", values, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdBetween(Long value1, Long value2) {
+            addCriterion("global_id between", value1, value2, "globalId");
+            return (Criteria) this;
+        }
+
+        public Criteria andGlobalIdNotBetween(Long value1, Long value2) {
+            addCriterion("global_id not between", value1, value2, "globalId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

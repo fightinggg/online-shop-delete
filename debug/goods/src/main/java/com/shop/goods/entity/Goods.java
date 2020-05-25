@@ -1,21 +1,43 @@
 package com.shop.goods.entity;
 
-public class Goods {
+import java.io.Serializable;
+
+public class Goods implements Serializable {
     private Integer id;
 
-    private String name;
+    private Long globalId;
 
-    private Integer sellerid;
+    private Integer userId;
 
     private Integer price;
 
     private String category;
 
-    private Integer salevol;
+    private Integer allSize;
 
     private String mainurl;
 
-    private String maindescribe;
+    private String mainDescribe;
+
+    private String name;
+
+    private static final long serialVersionUID = 1L;
+
+    public Goods(Integer id, Long globalId, Integer userId, Integer price, String category, Integer allSize, String mainurl, String mainDescribe, String name) {
+        this.id = id;
+        this.globalId = globalId;
+        this.userId = userId;
+        this.price = price;
+        this.category = category;
+        this.allSize = allSize;
+        this.mainurl = mainurl;
+        this.mainDescribe = mainDescribe;
+        this.name = name;
+    }
+
+    public Goods() {
+        super();
+    }
 
     public Integer getId() {
         return id;
@@ -25,20 +47,20 @@ public class Goods {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public Long getGlobalId() {
+        return globalId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGlobalId(Long globalId) {
+        this.globalId = globalId;
     }
 
-    public Integer getSellerid() {
-        return sellerid;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setSellerid(Integer sellerid) {
-        this.sellerid = sellerid;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getPrice() {
@@ -57,12 +79,12 @@ public class Goods {
         this.category = category;
     }
 
-    public Integer getSalevol() {
-        return salevol;
+    public Integer getAllSize() {
+        return allSize;
     }
 
-    public void setSalevol(Integer salevol) {
-        this.salevol = salevol;
+    public void setAllSize(Integer allSize) {
+        this.allSize = allSize;
     }
 
     public String getMainurl() {
@@ -73,11 +95,19 @@ public class Goods {
         this.mainurl = mainurl;
     }
 
-    public String getMaindescribe() {
-        return maindescribe;
+    public String getMainDescribe() {
+        return mainDescribe;
     }
 
-    public void setMaindescribe(String maindescribe) {
-        this.maindescribe = maindescribe;
+    public void setMainDescribe(String mainDescribe) {
+        this.mainDescribe = mainDescribe;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

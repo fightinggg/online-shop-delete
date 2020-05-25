@@ -4,16 +4,20 @@ import java.lang.reflect.Field;
 
 public class MyUtils {
     public static void upd(Object oldObject, Object newObject, Class clazz) {
-        for (Field field : clazz.getDeclaredFields()) {
+        upd(oldObject, newObject, clazz);
+    }
+
+    public static void upd(Object oldObject, Class oldClazz, Object newObject, Class newClazz) {
+        for (Field field : newClazz.getDeclaredFields()) {
             try {
-                field.setAccessible(true);
                 if (field.get(newObject) == null) {
-                    field.set(newObject, field.get(oldObject));
+                    String name = field.getName();
+                    field.set(newObject, oldClazz.getField(name).get(oldObject));
                 }
-            } catch (IllegalAccessException e) {
+            } catch (IllegalAccessException | NoSuchFieldException e) {
+                // do nothing
                 e.printStackTrace();
             }
         }
-
     }
 }

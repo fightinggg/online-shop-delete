@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.shop.common.autoconfiguration.ResponseEncodeAutoConfigration,\
+com.shop.common.autoconfiguration.ResponseDecodeAutoConfigration
+#com.shop.common.autoconfiguration.FunctionLoggerAOPAutoConfigration

@@ -4,24 +4,31 @@
     <resultMap id="BaseResultMap" type="com.shop.goods.entity.Goods">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="name" jdbcType="VARCHAR" property="name" />
-        <result column="sellerId" jdbcType="INTEGER" property="sellerid" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
         <result column="price" jdbcType="INTEGER" property="price" />
         <result column="category" jdbcType="VARCHAR" property="category" />
-        <result column="salevol" jdbcType="INTEGER" property="salevol" />
+        <result column="all_size" jdbcType="INTEGER" property="allSize" />
         <result column="mainURL" jdbcType="VARCHAR" property="mainurl" />
-        <result column="mainDescribe" jdbcType="VARCHAR" property="maindescribe" />
+        <result column="main_describe" jdbcType="VARCHAR" property="mainDescribe" />
     </resultMap>
-
     <select id="selectByPage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select *
-        from goods limit ${pageBegin} , ${perPage}
+        from tb_goods
+            limit ${pageBegin} , ${perPage}
     </select>
 
     <select id="selectByPageAndCategory" resultMap="BaseResultMap">
         select *
-        from goods
-        where category = ${category} limit ${pageBegin}
-            , ${perPage}
+        from tb_goods
+        where category = ${category}
+        limit ${pageBegin} , ${perPage}
+    </select>
+
+    <select id="selectByUserId" resultType="com.shop.goods.entity.Goods">
+        select *
+        from tb_goods
+        where user_id = ${userId}
+        limit ${pageBegin} , ${perPage}
     </select>
 
 </mapper>

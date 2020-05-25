@@ -13,6 +13,11 @@ public class UrlService {
     UrlDao urlDao;
 
     public List<Url> searchAllUrl(int pageBegin, int perPage) {
-        return urlDao.searchAllUrl(pageBegin,perPage);
+        return urlDao.searchAllUrl(pageBegin, perPage);
+    }
+
+    public String add(Url url) {
+        urlDao.insert(url);
+        return "成功";
     }
 }

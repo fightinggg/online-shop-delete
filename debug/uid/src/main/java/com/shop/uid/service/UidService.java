@@ -7,6 +7,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 public class UidService {
     @Autowired
@@ -15,6 +17,8 @@ public class UidService {
 
     @Value("${kafka.uid.topic}")
     private String topic;
+
+    static int x = 1;
 
     public long getUID() {
         return uidGenerator.getUID();

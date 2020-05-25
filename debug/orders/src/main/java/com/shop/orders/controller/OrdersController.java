@@ -1,6 +1,7 @@
 package com.shop.orders.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.shop.common.annotation.ResponseEncode;
 import com.shop.orders.entity.Orders;
 import com.shop.orders.service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,15 @@ public class OrdersController {
     OrdersService ordersService;
 
     // 添加订单
-    @PostMapping("/buyer/{buyerId}")
-    public String post(@PathVariable int buyerId, @RequestBody Orders orders) {
+    @PostMapping("/")
+    @ResponseEncode
+    public String post( int buyerId, @RequestBody Orders orders) {
         return JSON.toJSONString(ordersService.post(buyerId, orders));
     }
 
     // 取消订单
-    @DeleteMapping("buyer/{buyerId}/{ordersId}")
+    @DeleteMapping("{ordersId}")
+    @ResponseEncode
     public String delete(@PathVariable int buyerId, @PathVariable int ordersId) {
         return JSON.toJSONString(ordersService.delete(buyerId, ordersId));
     }

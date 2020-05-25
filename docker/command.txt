@@ -5,14 +5,19 @@ docker run -itd -p 9000:9000 --name minio -e "MINIO_ACCESS_KEY=admin" -e "MINIO_
 
 docker run -itd -p 27017:27017 mongo
 
-docker run -itd --name redis-test -p 6379:6379 redis
+docker run -itd --name redis -p 6379:6379 redis
 
-docker run -idt --name mysql1 -p 3307:3306  -e MYSQL_ROOT_PASSWORD=123456 mysql
-docker run -idt --name mysql2 -p 3308:3306  -e MYSQL_ROOT_PASSWORD=123456 mysql
+docker run -p 5601:5601 -p 9200:9200 -p 5044:5044 -it --name elk sebp/elk
+
+docker run -idt --name mysql1 -p 3306:3306  -e MYSQL_ROOT_PASSWORD=123456 mysql
 
 
+docker run -d --restart=always --log-driver json-file --log-opt max-size=100m --log-opt max-file=2  --name zookeeper -p 2181:2181 wurstmeister/zookeeper
 
-
+zookeeper-server-start /usr/local/etc/kafka/zookeeper.properties 
+kafka-server-start /usr/local/etc/kafka/server.properties 
+kafka-console-producer --broker-list localhost:9092 --topic online-shop-goods
+kafka-console-consumer --bootstrap-server localhost:9092 --topic online-shop-goods
 
 nohup java -jar eureka-0.0.1-SNAPSHOT.jar > logs/eureka.out &
 

@@ -1,6 +1,7 @@
 package com.shop.user.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.shop.common.annotation.ResponseEncode;
 import com.shop.user.entity.User;
 import com.shop.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,39 +16,45 @@ public class UserController {
 
     // 注册账号
     @PostMapping("/")
-    public String post(@RequestBody User user) {
-        return JSON.toJSONString(userService.post(user));
+    @ResponseEncode
+    public Object post(@RequestBody User user) {
+        return userService.post(user);
     }
 
     // 查询账号是否可用
     @GetMapping("/id/is/effective/{searchId}")
-    public String getBuyerIdIsEffective(@PathVariable int searchId){
-        return JSON.toJSONString(userService.idIsEffective(searchId));
+    @ResponseEncode
+    public Object getBuyerIdIsEffective(@PathVariable int searchId){
+        return userService.idIsEffective(searchId);
     }
 
     // 查看自己账号的信息
     @GetMapping("/")
-    public String get(@RequestHeader int id) {
-        return JSON.toJSONString(userService.get(id));
+    @ResponseEncode
+    public Object get(@RequestHeader int id) {
+        return userService.get(id);
     }
 
     // 查询个人余额
     @GetMapping("/money")
-    public String getMoney(@RequestHeader int id) {
-        return JSON.toJSONString(userService.getMoney(id));
+    @ResponseEncode
+    public Object getMoney(@RequestHeader int id) {
+        return userService.getMoney(id);
     }
 
     // 修改账号信息
     @PutMapping("/")
-    public String put(@RequestHeader int id, @RequestBody User user) {
+    @ResponseEncode
+    public Object put(@RequestHeader int id, @RequestBody User user) {
         user.setId(id);
-        return JSON.toJSONString(userService.put(user));
+        return userService.put(user);
     }
 
     // 充值
     @PutMapping("/add/money/{money}")
-    public String addMoney(@RequestHeader int id, @PathVariable int money) {
-        return JSON.toJSONString(userService.addMoney(id, money));
+    @ResponseEncode
+    public Object addMoney(@RequestHeader int id, @PathVariable int money) {
+        return userService.addMoney(id, money);
     }
 
 
