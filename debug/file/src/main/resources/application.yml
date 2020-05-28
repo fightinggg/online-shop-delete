@@ -1,5 +1,5 @@
 minio:
-  url: http://127.0.0.1:9000
+  url: http://localhost:9000
   accessKey: admin
   secretKey: admin123456
   bucketName: shop
@@ -10,7 +10,7 @@ server:
 
 spring:
   application:
-    name: service-file
+    name: file
 
 eureka:
   client:

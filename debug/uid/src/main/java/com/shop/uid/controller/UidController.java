@@ -12,9 +12,14 @@ public class UidController {
     @Autowired
     UidService uidService;
 
+    static volatile int x = 1;
+
     @GetMapping(value = "/")
     @ResponseEncode
-    Object getUid() {
+    Object getUid() throws Exception {
+        x++;
+        if (x % 6 == 0)
+            throw new Exception("fuck");
         return uidService.getUID();
     }
 }

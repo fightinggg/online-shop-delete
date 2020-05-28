@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shop.orders.dao.OrdersDao">
-    <resultMap id="BaseResultMap" type="com.shop.orders.entity.Orders">
-        <id column="id" jdbcType="INTEGER" property="id"/>
-        <result column="buyerId" jdbcType="INTEGER" property="buyerid"/>
-        <result column="goodsId" jdbcType="INTEGER" property="goodsid"/>
-        <result column="addressid" jdbcType="INTEGER" property="addressid"/>
-        <result column="counts" jdbcType="INTEGER" property="counts"/>
-        <result column="state" jdbcType="CHAR" property="state"/>
+    <resultMap id="BaseResultMap" type="com.shop.orders.entity.Goods">
+        <constructor>
+            <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+            <arg column="global_id" javaType="java.lang.Long" jdbcType="BIGINT" />
+            <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+            <arg column="price" javaType="java.lang.Integer" jdbcType="INTEGER" />
+            <arg column="category" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="all_size" javaType="java.lang.Integer" jdbcType="INTEGER" />
+            <arg column="mainURL" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="main_describe" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+        </constructor>
     </resultMap>
     <select id="selectBySellerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select *
-        from orders as o, goods as g
-        where o.goodsId = g.id and g.sellerId = #{sellerId}
+        from tb_orders
+        where tb_orders.sellerId = #{sellerId}
     </select>
     <select id="selectByBuyerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select *
-        from orders
-        where orders.buyerId = #{buyerId}
+        from tb_orders
+        where tb_orders.buyerId = #{buyerId}
+    </select>
+    <select id="selectByGlobalId" resultType="com.shop.orders.entity.Orders">
+        select *
+        from tb_orders
+        where tb_orders.global_id = #{globalId};
     </select>
 </mapper>

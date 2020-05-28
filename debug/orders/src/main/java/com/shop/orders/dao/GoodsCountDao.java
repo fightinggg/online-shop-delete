@@ -1,4 +1,6 @@
 package com.shop.orders.dao;
 
-public interface GoodsCountDao {
+import com.shop.orders.mapper.GoodsCountsMapper;
+
+public interface GoodsCountDao extends GoodsCountsMapper {
 }

@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "Comments")
 public class Comments {
     String _id;
+    Long globalId;
     Integer buyerId;
     Integer goodsId;
     Integer replyId; // 回复

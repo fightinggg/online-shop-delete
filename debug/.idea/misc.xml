@@ -5,7 +5,6 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
-        <option value="$PROJECT_DIR$/zuul/pom.xml" />
         <option value="$PROJECT_DIR$/oauth2/pom.xml" />
         <option value="$PROJECT_DIR$/goods/pom.xml" />
         <option value="$PROJECT_DIR$/orders/pom.xml" />

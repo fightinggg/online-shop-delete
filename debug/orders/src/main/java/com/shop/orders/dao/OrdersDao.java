@@ -9,4 +9,6 @@ public interface OrdersDao extends OrdersMapper {
     List<Orders> selectByBuyerId(int buyerId);
 
     List<Orders> selectBySellerId(int sellerId);
+
+    Orders selectByGlobalId(Long globalId);
 }

@@ -1,4 +1,5 @@
 package com.shop.comments.dao;
+
 import com.mongodb.client.result.UpdateResult;
 import com.shop.comments.entity.Comments;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,16 @@ public class CommentsDao {
     MongoTemplate mongoTemplate;
 
     public String insert(Comments comments) {
-        mongoTemplate.save(comments);
-        return "成功";
+        return mongoTemplate.save(comments).get_id();
     }
 
-    public List<Comments> findByGoodsId(Integer integers){
-        Query query = new Query( Criteria.where("goodsId").is(integers));
+    public List<Comments> findByGoodsId(Integer integers) {
+        Query query = new Query(Criteria.where("goodsId").is(integers));
         return mongoTemplate.find(query, Comments.class);
     }
 
-    public Comments delById(String id) {
-        Query query = new Query(Criteria.where("_id").is(id));
+    public Comments delById(int buyerId, String commentsId) {
+        Query query = new Query(Criteria.where("_id").is(commentsId).and("buyerId").is(buyerId));
         return mongoTemplate.findAndRemove(query, Comments.class);
     }
 }

@@ -10,7 +10,7 @@ import com.shop.goods.dao.GoodsDescribeDao;
 import com.shop.goods.entity.*;
 import com.shop.goods.enums.RedisTime;
 import com.shop.goods.service.GoodsService;
-import com.shop.goods.service.UidService;
+import com.shop.common.service.UidService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
@@ -55,7 +55,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Transactional
     public String delete(int userId, int goodsId) throws NoAuthorityException, NoFoundException {
         Goods goods = goodsDao.selectByPrimaryKey(goodsId);
-        if(goods==null) throw new NoFoundException();
+        if (goods == null) throw new NoFoundException();
 
         // 验证
         if (userId != goods.getUserId()) throw new NoAuthorityException();
@@ -70,7 +70,7 @@ public class GoodsServiceImpl implements GoodsService {
         // 准备数据
         Goods goods = goodsVO.getGoods();
         Goods oldGoods = goodsDao.selectByPrimaryKey(goods.getId());
-        if(oldGoods==null) throw new NoFoundException();
+        if (oldGoods == null) throw new NoFoundException();
 
         MyUtils.upd(oldGoods, goods, goods.getClass());
         goods.setGlobalId(oldGoods.getGlobalId());
@@ -93,10 +93,10 @@ public class GoodsServiceImpl implements GoodsService {
 
     public GoodsVO get(int goodsId) throws NoFoundException {
         Goods goods = goodsDao.selectByPrimaryKey(goodsId);
-        if(goods==null) throw new NoFoundException();
+        if (goods == null) throw new NoFoundException();
 
         ImageNameAndDescribes byGoodsId = goodsDescribeDao.findByGoodsId(goodsId);
-        return new GoodsVO(goods,byGoodsId.getImageNameAndDescribes());
+        return new GoodsVO(goods, byGoodsId.getImageNameAndDescribes());
     }
 
     // 商品数量

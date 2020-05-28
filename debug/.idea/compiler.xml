@@ -15,12 +15,11 @@
         <module name="orders" />
         <module name="user" />
         <module name="uid" />
-        <module name="zuul" />
-        <module name="common" />
         <module name="eureka" />
         <module name="config" />
         <module name="comments" />
         <module name="authority" />
+        <module name="common" />
         <module name="integral" />
       </profile>
     </annotationProcessing>
@@ -32,6 +31,7 @@
       <module name="uid-dao" target="1.8" />
       <module name="uit2mysql" target="1.8" />
       <module name="utils" target="1.5" />
+      <module name="zuul" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

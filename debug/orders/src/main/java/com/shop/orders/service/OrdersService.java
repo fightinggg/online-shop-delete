@@ -1,6 +1,10 @@
 package com.shop.orders.service;
 
 import com.alibaba.fastjson.JSON;
+import com.shop.common.exception.FallbackException;
+import com.shop.common.exception.NoAuthorityException;
+import com.shop.common.exception.NoFoundException;
+import com.shop.common.service.UidService;
 import com.shop.orders.dao.*;
 import com.shop.orders.entity.*;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
@@ -10,32 +14,32 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.UUID;
-
 @Service
 public class OrdersService {
     @Autowired
     OrdersDao ordersDao;
     @Autowired
-    BuyermoneyDao buyermoneyDao;
-    @Autowired
-    SellermoneyDao sellermoneyDao;
+    MoneyDao moneyDao;
     @Autowired
     GoodsDao goodsDao;
     @Autowired
-    GoodscountsDao goodscountsDao;
+    GoodsCountDao goodsCountDao;
     @Autowired
     RocketMQTemplate rocketMQTemplate;
+    @Autowired
+    UidService uidService;
 
     // 添加订单！ 事务管理
-    public String post(int buyerid, Orders orders) {
-        // 验证权限
-        if (buyerid != orders.getBuyerid()) return "失败";
+    public String post(int id, Orders orders) throws FallbackException {
         // 分布式事务启动
-        // 创建一个事务消息
-        // TODO
-        orders.setId((int) System.currentTimeMillis());
+        // 创建一个事务消息, 现在除了id以外，其他的都已经完成赋值
+        Goods goods = goodsDao.selectByPrimaryKey(orders.getGoodsId());
+        orders.setGlobalId((Long) uidService.getUid());
+        orders.setBuyerId(id);
+        orders.setBuyerSubmit(false);
+        orders.setSellerSubmit(false);
+        orders.setSellerId(goods.getUserId());
+        orders.setPrice(goods.getPrice());
         String jsonString = JSON.toJSONString(orders);
         //生成message类型
         Message<String> message = MessageBuilder.withPayload(jsonString).build();
@@ -46,73 +50,80 @@ public class OrdersService {
           Message<?> message, 消息内容
           Object arg 参数
          */
-        rocketMQTemplate.sendMessageInTransaction("orderProducer", "addOrder:hi", message, null);
+        rocketMQTemplate.sendMessageInTransaction("orderProducer", "addOrder", message, null);
         return "成功";
     }
 
     @Transactional
-    public void localpost(Orders orders) {
-        // 查询
-        Buyermoney buyermoney = buyermoneyDao.selectByPrimaryKey(orders.getBuyerid());
-        Goods goods = goodsDao.selectByPrimaryKey(orders.getGoodsid());
-        Goodscounts goodscounts = goodscountsDao.selectByPrimaryKey(orders.getGoodsid());
-        Sellermoney sellermoney = sellermoneyDao.selectByPrimaryKey(goods.getSellerid());
+    public void localPost(Orders orders) throws Exception {
+        // 查询+准备
+        Money buyerMoney = moneyDao.selectByPrimaryKey(orders.getBuyerId());
+        GoodsCounts goodsCounts = goodsCountDao.selectByPrimaryKey(orders.getGoodsId());
 
         // 计算
         int count = orders.getCounts();
-        int cost = goods.getPrice() * count;
+        int cost = orders.getPrice() * count;
 
         // 修改
-        buyermoney.setMoney(buyermoney.getMoney() - cost);
-        goodscounts.setCounts(goodscounts.getCounts() - count);
-        sellermoney.setMoney(sellermoney.getMoney() + cost);
+        if (buyerMoney.getMoney() < cost) throw new Exception("钱不够了");
+        if (goodsCounts.getCounts() < count) throw new Exception("商品不够了");
+        buyerMoney.setMoney(buyerMoney.getMoney() - cost);
+        goodsCounts.setCounts(goodsCounts.getCounts() - count);
 
         // 执行
-        buyermoneyDao.updateByPrimaryKeySelective(buyermoney);
-        goodscountsDao.updateByPrimaryKeySelective(goodscounts);
-        sellermoneyDao.updateByPrimaryKeySelective(sellermoney);
+        moneyDao.updateByPrimaryKey(buyerMoney);
+        goodsCountDao.updateByPrimaryKey(goodsCounts);
         ordersDao.insertSelective(orders);
-
     }
 
     // 移除订单！ 事务管理
     @Transactional
-    public int delete(int buyerid, int ordersId) {
-        // 本地事务
+    public String delete(int id, int ordersId) throws NoFoundException, NoAuthorityException {
+        // 准备
         Orders orders = ordersDao.selectByPrimaryKey(ordersId);
-        Buyermoney buyermoney = buyermoneyDao.selectByPrimaryKey(orders.getBuyerid());
-        Goods goods = goodsDao.selectByPrimaryKey(orders.getGoodsid());
-        Goodscounts goodscounts = goodscountsDao.selectByPrimaryKey(orders.getGoodsid());
-        Sellermoney sellermoney = sellermoneyDao.selectByPrimaryKey(goods.getSellerid());
 
+        // 安全
+        if (orders == null) throw new NoFoundException();
+        if (id != orders.getBuyerId()) throw new NoAuthorityException();
+
+        GoodsCounts goodsCounts = goodsCountDao.selectByPrimaryKey(orders.getGoodsId());
+        Money buyerMoney = moneyDao.selectByPrimaryKey(orders.getBuyerId());
+
+        // 计算
         int count = orders.getCounts();
-        int cost = goods.getPrice() * count;
+        int cost = orders.getPrice() * count;
 
-        buyermoney.setMoney(buyermoney.getMoney() + cost);
-        goodscounts.setCounts(goodscounts.getCounts() + count);
-        sellermoney.setMoney(sellermoney.getMoney() - cost);
-        buyermoneyDao.updateByPrimaryKeySelective(buyermoney);
-        goodscountsDao.updateByPrimaryKeySelective(goodscounts);
-        sellermoneyDao.updateByPrimaryKeySelective(sellermoney);
+        // 修改
+        buyerMoney.setMoney(buyerMoney.getMoney() + cost);
+        goodsCounts.setCounts(goodsCounts.getCounts() + count);
 
-        return ordersDao.deleteByPrimaryKey(ordersId);
+        // 执行
+        moneyDao.updateByPrimaryKey(buyerMoney);
+        goodsCountDao.updateByPrimaryKey(goodsCounts);
+        ordersDao.deleteByPrimaryKey(ordersId);
+        return "成功";
     }
 
     // 完成订单
     @Transactional
-    public int successed(int buyerid, int ordersId) {
+
+    public String successed(int id, int ordersId) {
         Orders orders = ordersDao.selectByPrimaryKey(ordersId);
-        if (buyerid != orders.getBuyerid()) return 0;
-        orders.setState("successed");
-        return ordersDao.updateByPrimaryKeySelective(orders);
-    }
-
-    public List<Orders> buyerget(int buyerId) {
-        return ordersDao.selectByBuyerId(buyerId);
-    }
-
-    public List<Orders> sellerGet(int sellerId) {
-        return ordersDao.selectBySellerId(sellerId);
+        if (id == orders.getBuyerId()) {
+            orders.setBuyerSubmit(true);
+        }
+        if (id == orders.getSellerId()) {
+            orders.setSellerSubmit(true);
+        }
+        if (orders.getBuyerSubmit() && orders.getSellerSubmit()) {
+            Money money = moneyDao.selectByPrimaryKey(orders.getSellerId());
+            money.setMoney(money.getMoney() + orders.getPrice() * orders.getCounts());
+            ordersDao.updateByPrimaryKey(orders);
+            moneyDao.updateByPrimaryKey(money);
+            return "完成订单";
+        } else {
+            return "请等待其他人确定完成订单";
+        }
     }
 
     public Orders get(Integer id) {

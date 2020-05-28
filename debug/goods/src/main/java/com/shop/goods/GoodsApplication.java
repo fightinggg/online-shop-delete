@@ -3,7 +3,7 @@ package com.shop.goods;
 import com.shop.common.annotation.ResponseEncode;
 import com.shop.common.exception.FallbackException;
 import com.shop.common.exception.NoAuthorityException;
-import com.shop.goods.service.UidService;
+import com.shop.common.service.UidService;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,13 +20,10 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
 @EnableDiscoveryClient  // 发现
-@EnableCircuitBreaker // 断路器
 @MapperScan({"com.shop.goods.dao", "com.shop.goods.mapper"})
 @EnableCaching // 启动缓存
 @EnableSwagger2 // 启动文档
-@EnableFeignClients //启动Feign
 @RestController
-@EnableAspectJAutoProxy(exposeProxy = true)
 public class GoodsApplication {
     public static void main(String[] args) {
         SpringApplication.run(GoodsApplication.class, args);

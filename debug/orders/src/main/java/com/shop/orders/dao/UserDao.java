@@ -1,4 +1,6 @@
 package com.shop.orders.dao;
 
-public class UserDao {
+import com.shop.orders.mapper.UserMapper;
+
+public interface UserDao extends UserMapper {
 }

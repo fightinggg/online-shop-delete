@@ -1,24 +1,31 @@
 package com.shop.gateway.config;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.shop.gateway.dao.RoleUrlDao;
 import com.shop.gateway.dao.UserDao;
 import com.shop.gateway.dao.UserRoleDao;
+import org.bouncycastle.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.core.io.buffer.DataBufferUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
 import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.ReactiveSecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.ReactiveUserDetailsService;
 import org.springframework.security.core.userdetails.User;
@@ -33,10 +40,18 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
+import org.springframework.web.server.WebSession;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.swing.text.html.parser.Entity;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.security.Principal;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 
@@ -136,10 +151,21 @@ public class WebSecurityConfig {
 
         // 添加过滤器，
         http.addFilterAt((exchange, chain) -> {
-            ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("id", "1").build();
+            String username = exchange.getSession()
+                    .map(WebSession::getAttributes)
+                    .filter(o -> o.containsKey("SPRING_SECURITY_CONTEXT"))
+                    .map(o -> o.get("SPRING_SECURITY_CONTEXT"))
+                    .cast(SecurityContext.class)
+                    .map(SecurityContext::getAuthentication)
+                    .map(Authentication::getPrincipal)
+                    .cast(UserDetails.class)
+                    .map(UserDetails::getUsername)
+                    .block();
+            ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("id", username).build();
             ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
             return chain.filter(mutatedExchange);
-        }, SecurityWebFiltersOrder.HTTP_HEADERS_WRITER);
+        }, SecurityWebFiltersOrder.LAST);
+
 
         return http.build();
     }

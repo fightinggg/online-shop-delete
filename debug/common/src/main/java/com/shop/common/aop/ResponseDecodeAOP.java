@@ -24,7 +24,6 @@ public class ResponseDecodeAOP {
         String jsonString = (String) joinPoint.proceed(args);
         JSONObject jsonObject = JSON.parseObject(jsonString);
 
-//        System.out.println(jsonString);
         switch (jsonObject.getInteger("stateCode")) {
             case StateCode.SUCCESS: {
                 return jsonObject.get("data");

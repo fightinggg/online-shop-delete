@@ -1,49 +1,25 @@
 package com.shop.file.service;
 
-import com.shop.file.dao.FileDao;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.shop.common.exception.FallbackException;
+import io.minio.errors.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.xmlpull.v1.XmlPullParserException;
 
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.OutputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
-public class FileService {
-    @Autowired
-    FileDao fileDao;
+public interface FileService {
 
-    public String post(String fileName, MultipartFile file) {
-        return fileDao.insert(fileName, file);
-    }
+    public String post(Integer id, MultipartFile file) throws FallbackException, Exception;
 
-    public void get(String objectName, OutputStream outputStream) {
-        try {
-            InputStream inputStream = fileDao.getUrl(objectName);
-            byte[] bytes = new byte[1024];
-            for (int len = inputStream.read(bytes); len != -1; len = inputStream.read(bytes)) {
-                outputStream.write(bytes, 0, len);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public void get(String objectName, OutputStream outputStream) throws IOException, XmlPullParserException, NoSuchAlgorithmException, InvalidKeyException, InvalidExpiresRangeException, InvalidArgumentException, ErrorResponseException, NoResponseException, InvalidBucketNameException, InsufficientDataException, InternalException, Exception;
 
-    public void delete(String objectName) {
-        try {
-            fileDao.delete(objectName);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    public void delete(String id, String objectName) throws Exception;
 
-    public List<String> getImageNameBySeller(String sellerId){
-        try{
-            return fileDao.getImageNameBySeller(sellerId);
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
+    public List<String> getImageNameBySeller(String id) throws Exception;
 }

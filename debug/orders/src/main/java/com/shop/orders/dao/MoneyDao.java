@@ -1,4 +1,6 @@
 package com.shop.orders.dao;
 
-public interface MoneyDao {
+import com.shop.orders.mapper.MoneyMapper;
+
+public interface MoneyDao extends MoneyMapper {
 }

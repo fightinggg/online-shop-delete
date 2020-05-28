@@ -19,6 +19,13 @@ kafka-server-start /usr/local/etc/kafka/server.properties
 kafka-console-producer --broker-list localhost:9092 --topic online-shop-goods
 kafka-console-consumer --bootstrap-server localhost:9092 --topic online-shop-goods
 
+
+
+docker run -d -p 9876:9876  --name rocketmq-namesrv -e "MAX_POSSIBLE_HEAP=100000000" rocketmqinc/rocketmq sh mqnamesrv
+docker run -d -p 9876:9876  --name rocketmq-namesrv -e "MAX_POSSIBLE_HEAP=100000000" rocketmqinc/rocketmq sh mqnamesrv
+docker run -d -p 10911:10911 -p 10909:10909 --name rmqbroker --link rocketmq-namesrv:namesrv -e "NAMESRV_ADDR=namesrv:9876" -e "MAX_POSSIBLE_HEAP=200000000" rocketmqinc/rocketmq sh mqbroker -c /opt/rocketmq-4.4.0/conf/broker.conf
+
+
 nohup java -jar eureka-0.0.1-SNAPSHOT.jar > logs/eureka.out &
 
 nohup java -jar zuul-0.0.1-SNAPSHOT.jar > logs/zuul.out &

@@ -20,7 +20,7 @@ public class ResponseEncodeAOP {
     }
 
     @Around("pointCut()")
-    public Object around(ProceedingJoinPoint joinPoint) {
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         Object[] args = joinPoint.getArgs();
         try {
             return ResponseJSON.encode(StateCode.SUCCESS, joinPoint.proceed(args));
@@ -31,6 +31,8 @@ public class ResponseEncodeAOP {
         } catch (NoFoundException e) {
             return ResponseJSON.encode(StateCode.NO_FOUND, e.getMessage());
         } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            if(throwable.getMessage().equals("fuck")) throw throwable;
             return ResponseJSON.encode(StateCode.UNKNOWN_SREVER_ERROR, throwable.getMessage());
         }
     }

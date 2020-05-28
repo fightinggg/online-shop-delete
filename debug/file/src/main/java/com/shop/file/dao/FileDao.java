@@ -42,31 +42,25 @@ public class FileDao {
         return new MinioClient(url, accessKey, secretKey);
     }
 
-    public String insert(String fileName, MultipartFile file) {
-        try {
-            InputStream is = file.getInputStream(); //得到文件流
-            String contentType = file.getContentType();  //类型
-            minioClient.putObject(bucketName, fileName, is, contentType);
-            return minioClient.getObjectUrl(bucketName, fileName);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return "上传失败";
-        }
+    public String insert(String fileName, MultipartFile file) throws Exception {
+        InputStream is = file.getInputStream(); //得到文件流
+        String contentType = file.getContentType();  //类型
+        minioClient.putObject(bucketName, fileName, is, contentType);
+        return minioClient.getObjectUrl(bucketName, fileName);
     }
 
-    public InputStream getUrl(String objectName) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InvalidExpiresRangeException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException, InvalidArgumentException {
-        return minioClient.getObject(bucketName,objectName);
-        //return minioClient.presignedGetObject(bucketName, objectName);
+    public InputStream getStream(String objectName) throws Exception {
+        return minioClient.getObject(bucketName, objectName);
     }
 
-    public void delete(String objectName) throws IOException, InvalidKeyException, NoSuchAlgorithmException, InsufficientDataException, InternalException, NoResponseException, InvalidBucketNameException, XmlPullParserException, ErrorResponseException {
+    public void delete(String objectName) throws Exception {
         minioClient.removeObject(bucketName, objectName);
     }
 
-    public List<String> getImageNameBySeller(String sellerId) throws XmlPullParserException, InsufficientDataException, NoSuchAlgorithmException, IOException, NoResponseException, InvalidKeyException, InternalException, InvalidBucketNameException, ErrorResponseException {
+    public List<String> getImageNameBySeller(String sellerId) throws Exception {
         Iterable<Result<Item>> results = minioClient.listObjects(bucketName, sellerId);
         List<String> res = new ArrayList<>();
-        for(Result<Item> result:results){
+        for (Result<Item> result : results) {
             res.add(result.get().objectName());
         }
         return res;

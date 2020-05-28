@@ -25,6 +25,7 @@
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.shop.goods.mapper" targetProject="./goods/src/main/java"/>
 
 
+
         <table tableName="tb_goods" domainObjectName="Goods">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
         </table>
