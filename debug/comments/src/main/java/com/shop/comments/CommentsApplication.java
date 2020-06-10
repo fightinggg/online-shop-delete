@@ -1,5 +1,6 @@
 package com.shop.comments;
 
+import com.shop.common.annotation.enable.EnableUidServiceFeignAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -12,6 +13,7 @@ import reactor.core.publisher.Mono;
 @EnableDiscoveryClient
 @EnableFeignClients
 @EnableCircuitBreaker
+@EnableUidServiceFeignAutoConfiguration
 public class CommentsApplication {
 
     public static void main(String[] args) {

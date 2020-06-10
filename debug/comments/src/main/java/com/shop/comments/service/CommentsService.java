@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface CommentsService {
 
-    public String insert(Integer id, int goodsId, int replayId, String string) throws FallbackException;
+    public String insert(Integer id, int goodsId, String replayId, String string) throws FallbackException;
 
     public List<Comments> findByGoodsId(int integers);
 

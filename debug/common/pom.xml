@@ -19,6 +19,11 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+            <version>3.0.4.RELEASE</version>
+        </dependency>
 
 
         <dependency>
@@ -69,6 +74,14 @@
             <version>1.18.6</version>
             <scope>compile</scope>
         </dependency>
+
+
+        <!--        mongo-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
 
     </dependencies>
 

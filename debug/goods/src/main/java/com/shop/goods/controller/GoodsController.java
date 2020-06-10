@@ -1,6 +1,7 @@
 package com.shop.goods.controller;
 
 import com.shop.common.annotation.ResponseEncode;
+import com.shop.common.annotation.enable.EnableResponseEncodeAutoConfigration;
 import com.shop.common.exception.FallbackException;
 import com.shop.common.exception.NoAuthorityException;
 import com.shop.common.exception.NoFoundException;
@@ -10,6 +11,7 @@ import com.shop.goods.service.GoodsService;
 import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -19,6 +21,7 @@ import java.util.List;
 //@RequestMapping("/api")
 @Api(tags = "商品微服务")
 @Slf4j
+@EnableResponseEncodeAutoConfigration
 public class GoodsController {
     @Autowired
     GoodsService goodsService;
@@ -61,7 +64,8 @@ public class GoodsController {
     @GetMapping("/{goodsId}")
     @ApiOperation(value = "查询一个商品的详细信息", notes = "传入商品id即可")
     @ApiImplicitParam(name = "goodsId", value = "商品ID", dataType = "int", required = true)
-    public Object get(@ApiIgnore @RequestHeader Integer id, @PathVariable int goodsId)
+    public Object get(@ApiIgnore @RequestHeader @Nullable Integer id,
+                      @PathVariable int goodsId)
             throws NoFoundException {
         log.info("用户{}浏览商品{}的详细信息", id, goodsId);
         return goodsService.get(goodsId);
@@ -85,7 +89,7 @@ public class GoodsController {
     @ApiOperation(value = "获得一个商品的余量", notes = "传入商品的ID")
     @ApiImplicitParam(name = "goodsId", value = "商品ID", dataType = "int", required = true)
     public Object getCount(@ApiIgnore @RequestHeader(required = false) Object id,
-                        @PathVariable int goodsId) {
+                           @PathVariable int goodsId) {
         log.info("用户{}获得商品{}的余量", id, goodsId);
         return goodsService.getCount(goodsId);
     }
@@ -99,8 +103,8 @@ public class GoodsController {
             @ApiImplicitParam(name = "perPage", value = "页面元素的个数", dataType = "int", required = true)
     })
     public Object getByPage(@ApiIgnore @RequestHeader(required = false) Object id,
-                                   @PathVariable int pageBegin,
-                                   @PathVariable int perPage) {
+                            @PathVariable int pageBegin,
+                            @PathVariable int perPage) {
         log.info("用户{}分页查询了一次商品", id);
         return goodsService.getByPage(pageBegin, perPage);
     }
@@ -115,9 +119,9 @@ public class GoodsController {
             @ApiImplicitParam(name = "perPage", value = "页面元素的个数", dataType = "int", required = true)
     })
     public Object getBySeller(@ApiIgnore @RequestHeader(required = false) Object id,
-                                     @PathVariable int sellerId,
-                                     @PathVariable int pageBegin,
-                                     @PathVariable int perPage) {
+                              @PathVariable int sellerId,
+                              @PathVariable int pageBegin,
+                              @PathVariable int perPage) {
         log.info("用户{}分页查询了一次商家{}的商品", id, sellerId);
         return goodsService.getBySeller(sellerId, pageBegin, perPage);
     }
@@ -131,9 +135,9 @@ public class GoodsController {
             @ApiImplicitParam(name = "perPage", value = "页面元素的个数", dataType = "int", required = true)
     })
     public Object getByCategory(@ApiIgnore @RequestHeader(required = false) Object id,
-                                       @RequestBody String category,
-                                       @PathVariable int pageBegin,
-                                       @PathVariable int perPage) {
+                                @RequestBody String category,
+                                @PathVariable int pageBegin,
+                                @PathVariable int perPage) {
         log.info("用户{}分页查询了一次类型{}的商品", id, category);
         return goodsService.getByCategory(category, pageBegin, perPage);
     }

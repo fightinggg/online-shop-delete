@@ -19,4 +19,7 @@ public class StateCode {
 
     // 资源找不到了
     public static final int NO_FOUND = 6;
+
+    // 没有登陆
+    public static final int NO_AUTHENTICATED = 7;
 }

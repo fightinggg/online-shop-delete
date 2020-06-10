@@ -1,7 +1,9 @@
 package com.shop.file.controller;
 
 import com.shop.common.annotation.ResponseEncode;
+import com.shop.common.annotation.enable.EnableResponseEncodeAutoConfigration;
 import com.shop.common.exception.FallbackException;
+import com.shop.common.service.UidService;
 import com.shop.file.service.FileService;
 import io.minio.errors.*;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +24,13 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@EnableResponseEncodeAutoConfigration
 public class FileController {
     @Autowired
     FileService fileService;
+    @Autowired
+    UidService uidService;
+
 
     @PostMapping("/")
     @ResponseEncode
@@ -35,7 +41,7 @@ public class FileController {
         return filename;
     }
 
-    @GetMapping("/{filename}")
+    @GetMapping(value = "/{filename}", produces = "image/apng")
     public void get(@RequestHeader @Nullable Integer id,
                     @PathVariable String filename,
                     HttpServletResponse response) throws Exception {

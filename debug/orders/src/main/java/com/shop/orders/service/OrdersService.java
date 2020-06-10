@@ -14,6 +14,8 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class OrdersService {
     @Autowired
@@ -51,7 +53,7 @@ public class OrdersService {
           Object arg 参数
          */
         rocketMQTemplate.sendMessageInTransaction("orderProducer", "addOrder", message, null);
-        return "成功";
+        return "订单提交成功，这里无法保证购买成功，具体信息请注意查看您的邮箱";
     }
 
     @Transactional
@@ -106,7 +108,6 @@ public class OrdersService {
 
     // 完成订单
     @Transactional
-
     public String successed(int id, int ordersId) {
         Orders orders = ordersDao.selectByPrimaryKey(ordersId);
         if (id == orders.getBuyerId()) {
@@ -115,10 +116,10 @@ public class OrdersService {
         if (id == orders.getSellerId()) {
             orders.setSellerSubmit(true);
         }
+        ordersDao.updateByPrimaryKey(orders);
         if (orders.getBuyerSubmit() && orders.getSellerSubmit()) {
             Money money = moneyDao.selectByPrimaryKey(orders.getSellerId());
             money.setMoney(money.getMoney() + orders.getPrice() * orders.getCounts());
-            ordersDao.updateByPrimaryKey(orders);
             moneyDao.updateByPrimaryKey(money);
             return "完成订单";
         } else {
@@ -126,7 +127,7 @@ public class OrdersService {
         }
     }
 
-    public Orders get(Integer id) {
-        return ordersDao.selectByPrimaryKey(id);
+    public List<Orders> get(Integer id, Integer pageBegin, Integer perPage) {
+        return ordersDao.selectByBuyerId(id, pageBegin, perPage);
     }
 }

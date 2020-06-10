@@ -16,15 +16,25 @@ spring:
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
-#  cloud:
-#    stream:
-#      rocketmq:
-#        binder:
-#          name-server: localhost:9876
+
+  mail:
+    host: smtp.qq.com
+    username: 246553278@qq.com # 邮箱账号
+    password: cnwdajudsnvvcacg # 授权码（下面将会告诉你怎么申请）
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
 rocketmq:
   name-server: localhost:9876
   producer:
     group: ordersProducer
+
+
 
 
 #  session:

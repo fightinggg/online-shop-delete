@@ -32,7 +32,9 @@ public class ResponseEncodeAOP {
             return ResponseJSON.encode(StateCode.NO_FOUND, e.getMessage());
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            if(throwable.getMessage().equals("fuck")) throw throwable;
+            if (throwable.getMessage() == null)
+                return ResponseJSON.encode(StateCode.UNKNOWN_SREVER_ERROR, throwable.getMessage());
+            if (throwable.getMessage().equals("fuck")) throw throwable;
             return ResponseJSON.encode(StateCode.UNKNOWN_SREVER_ERROR, throwable.getMessage());
         }
     }

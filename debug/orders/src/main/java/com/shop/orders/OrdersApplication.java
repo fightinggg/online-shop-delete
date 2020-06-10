@@ -1,16 +1,20 @@
 package com.shop.orders;
 
-import org.apache.tomcat.util.net.WriteBuffer;
+import com.shop.common.annotation.enable.EnablePrivateMsgProduceServiceAutoConfiguration;
+import com.shop.common.annotation.enable.EnableResponseEncodeAutoConfigration;
+import com.shop.common.annotation.enable.EnableUidServiceFeignAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+
 
 @SpringBootApplication
-@MapperScan({"com.shop.orders.dao","com.shop.orders.mapper"})
-@EnableFeignClients //启动Feign
 @EnableCaching
+@EnableResponseEncodeAutoConfigration
+@EnableUidServiceFeignAutoConfiguration
+@EnablePrivateMsgProduceServiceAutoConfiguration
+@MapperScan({"com.shop.orders.dao", "com.shop.orders.mapper"})
 public class OrdersApplication {
 
     public static void main(String[] args) {

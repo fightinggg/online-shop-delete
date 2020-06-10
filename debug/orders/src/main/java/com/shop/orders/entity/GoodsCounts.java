@@ -44,4 +44,18 @@ public class GoodsCounts implements Serializable {
     public void setGlobalId(Long globalId) {
         this.globalId = globalId;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", counts=").append(counts);
+        sb.append(", globalId=").append(globalId);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }

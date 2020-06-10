@@ -6,20 +6,30 @@ import feign.Request;
 import feign.Response;
 import feign.codec.DecodeException;
 import feign.codec.Decoder;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 
+@Slf4j
 @Configuration
 @ConditionalOnWebApplication
 public class MyFeignAutoConfiguration {
 
+
     public static final int CONNECT_TIMEOUT_MILLIS = 5000;
     public static final int READ_TIMEOUT_MILLIS = 5000;
+
+    @PostConstruct
+    public void initMethod() {
+        log.info("自动配置Feign");
+    }
+
 
     @Bean
     public Decoder feignDecoder() {
@@ -35,7 +45,6 @@ public class MyFeignAutoConfiguration {
             }
         };
     }
-
 
 
     @Bean

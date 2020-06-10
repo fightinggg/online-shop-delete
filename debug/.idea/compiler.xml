@@ -7,10 +7,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="msg" />
         <module name="file" />
+        <module name="email" />
         <module name="phone" />
         <module name="gateway" />
-        <module name="email" />
         <module name="goods" />
         <module name="orders" />
         <module name="user" />
@@ -19,6 +20,7 @@
         <module name="config" />
         <module name="comments" />
         <module name="authority" />
+        <module name="cart" />
         <module name="common" />
         <module name="integral" />
       </profile>
@@ -39,6 +41,7 @@
       <module name="auth" options="-parameters" />
       <module name="authority" options="-parameters" />
       <module name="buyer" options="-parameters" />
+      <module name="cart" options="-parameters" />
       <module name="comments" options="-parameters" />
       <module name="common" options="-parameters" />
       <module name="config" options="-parameters" />
@@ -49,6 +52,7 @@
       <module name="gateway" options="-parameters" />
       <module name="goods" options="-parameters" />
       <module name="integral" options="-parameters" />
+      <module name="msg" options="-parameters" />
       <module name="orders" options="-parameters" />
       <module name="phone" options="-parameters" />
       <module name="seller" options="-parameters" />

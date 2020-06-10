@@ -27,7 +27,6 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   data:
     mongodb:
-      #      uri: mongodb://zzq:123456@localhost:27017/admin
       uri: mongodb://localhost:27017/shop
 #  cloud:
 #    stream:

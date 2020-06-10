@@ -110,4 +110,24 @@ public class Goods implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", globalId=").append(globalId);
+        sb.append(", userId=").append(userId);
+        sb.append(", price=").append(price);
+        sb.append(", category=").append(category);
+        sb.append(", allSize=").append(allSize);
+        sb.append(", mainurl=").append(mainurl);
+        sb.append(", mainDescribe=").append(mainDescribe);
+        sb.append(", name=").append(name);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }

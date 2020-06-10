@@ -1,8 +1,6 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.shop.common.autoconfiguration.ResponseEncodeAutoConfigration,\
-com.shop.common.autoconfiguration.ResponseDecodeAutoConfigration, \
-com.shop.common.autoconfiguration.MyFeignAutoConfiguration, \
-com.shop.common.autoconfiguration.UidServiceFeignAutoConfiguration
-#com.shop.common.service.UidService
-#com.shop.common.service.impl.UidFallbackService
-#com.shop.common.autoconfiguration.FunctionLoggerAOPAutoConfigration
+#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+#  com.shop.common.autoconfiguration.MyFeignAutoConfiguration, \
+#  com.shop.common.autoconfiguration.ResponseDecodeAutoConfigration, \
+#  com.shop.common.autoconfiguration.ResponseEncodeAutoConfigration,\
+#  com.shop.common.autoconfiguration.UidServiceFeignAutoConfiguration
+#

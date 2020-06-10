@@ -17,8 +17,9 @@ public class UidController {
     @GetMapping(value = "/")
     @ResponseEncode
     Object getUid() throws Exception {
+        System.out.println("get uid");
         x++;
-        if (x % 6 == 0)
+        if (x % 20 == 0)
             throw new Exception("fuck");
         return uidService.getUID();
     }

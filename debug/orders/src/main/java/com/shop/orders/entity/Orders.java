@@ -121,4 +121,25 @@ public class Orders implements Serializable {
     public void setSellerSubmit(Boolean sellerSubmit) {
         this.sellerSubmit = sellerSubmit;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", globalId=").append(globalId);
+        sb.append(", buyerId=").append(buyerId);
+        sb.append(", sellerId=").append(sellerId);
+        sb.append(", goodsId=").append(goodsId);
+        sb.append(", price=").append(price);
+        sb.append(", counts=").append(counts);
+        sb.append(", addressId=").append(addressId);
+        sb.append(", buyerSubmit=").append(buyerSubmit);
+        sb.append(", sellerSubmit=").append(sellerSubmit);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }

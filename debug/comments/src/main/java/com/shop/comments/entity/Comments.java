@@ -15,6 +15,6 @@ public class Comments {
     Long globalId;
     Integer buyerId;
     Integer goodsId;
-    Integer replyId; // 回复
+    String replyId; // 回复
     String data;
 }

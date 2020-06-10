@@ -111,4 +111,24 @@ public class User implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", gloablId=").append(gloablId);
+        sb.append(", password=").append(password);
+        sb.append(", sex=").append(sex);
+        sb.append(", birthday=").append(birthday);
+        sb.append(", phoneNumber=").append(phoneNumber);
+        sb.append(", email=").append(email);
+        sb.append(", rate=").append(rate);
+        sb.append(", name=").append(name);
+        sb.append(", serialVersionUID=").append(serialVersionUID);
+        sb.append("]");
+        return sb.toString();
+    }
 }

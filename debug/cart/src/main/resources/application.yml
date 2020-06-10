@@ -1,0 +1,46 @@
+server:
+  port: 8094
+
+spring:
+  application:
+    name: cart
+  datasource:
+    url: jdbc:mysql://localhost:3306/shop?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/shop
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: myGroup
+  redis:
+    # redis数据库索引（默认为0），我们使用索引为3的数据库，避免和其他数据库冲突
+    database: 0
+    # redis服务器地址（默认为localhost）
+    host: localhost
+    # redis端口（默认为6379）
+    port: 6379
+    # redis访问密码（默认为空）
+    password:
+    # redis连接超时时间（单位为毫秒）
+    timeout: 1000ms
+    # redis连接池配置
+
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

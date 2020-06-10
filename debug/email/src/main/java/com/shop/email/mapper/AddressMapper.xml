@@ -1,35 +1,35 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.shop.email.mapper.AddressMapper">
-  <resultMap id="BaseResultMap" type="com.shop.email.entity.Address">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="global_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="phonenum" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.shop.email.mapper.AddressMapper" >
+  <resultMap id="BaseResultMap" type="com.shop.email.entity.Address" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="global_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phonenum" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
     </constructor>
   </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -40,25 +40,25 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
                   and ${criterion.condition}
                 </when>
-                <when test="criterion.singleValue">
+                <when test="criterion.singleValue" >
                   and ${criterion.condition} #{criterion.value}
                 </when>
-                <when test="criterion.betweenValue">
+                <when test="criterion.betweenValue" >
                   and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                 </when>
-                <when test="criterion.listValue">
+                <when test="criterion.listValue" >
                   and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
                     #{listItem}
                   </foreach>
                 </when>
@@ -69,40 +69,40 @@
       </foreach>
     </where>
   </sql>
-  <sql id="Base_Column_List">
+  <sql id="Base_Column_List" >
     id, global_id, user_id, address, phonenum, email
   </sql>
-  <select id="selectByExample" parameterType="com.shop.email.entity.AddressExample" resultMap="BaseResultMap">
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.shop.email.entity.AddressExample" >
     select
-    <if test="distinct">
+    <if test="distinct" >
       distinct
     </if>
     <include refid="Base_Column_List" />
     from tb_address
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
-    <if test="orderByClause != null">
+    <if test="orderByClause != null" >
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
     <include refid="Base_Column_List" />
     from tb_address
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from tb_address
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.shop.email.entity.AddressExample">
+  <delete id="deleteByExample" parameterType="com.shop.email.entity.AddressExample" >
     delete from tb_address
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.shop.email.entity.Address">
+  <insert id="insert" parameterType="com.shop.email.entity.Address" >
     insert into tb_address (id, global_id, user_id, 
       address, phonenum, email
       )
@@ -110,82 +110,82 @@
       #{address,jdbcType=VARCHAR}, #{phonenum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}
       )
   </insert>
-  <insert id="insertSelective" parameterType="com.shop.email.entity.Address">
+  <insert id="insertSelective" parameterType="com.shop.email.entity.Address" >
     insert into tb_address
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         id,
       </if>
-      <if test="globalId != null">
+      <if test="globalId != null" >
         global_id,
       </if>
-      <if test="userId != null">
+      <if test="userId != null" >
         user_id,
       </if>
-      <if test="address != null">
+      <if test="address != null" >
         address,
       </if>
-      <if test="phonenum != null">
+      <if test="phonenum != null" >
         phonenum,
       </if>
-      <if test="email != null">
+      <if test="email != null" >
         email,
       </if>
     </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
         #{id,jdbcType=INTEGER},
       </if>
-      <if test="globalId != null">
+      <if test="globalId != null" >
         #{globalId,jdbcType=BIGINT},
       </if>
-      <if test="userId != null">
+      <if test="userId != null" >
         #{userId,jdbcType=INTEGER},
       </if>
-      <if test="address != null">
+      <if test="address != null" >
         #{address,jdbcType=VARCHAR},
       </if>
-      <if test="phonenum != null">
+      <if test="phonenum != null" >
         #{phonenum,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
+      <if test="email != null" >
         #{email,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.shop.email.entity.AddressExample" resultType="java.lang.Integer">
+  <select id="countByExample" parameterType="com.shop.email.entity.AddressExample" resultType="java.lang.Integer" >
     select count(*) from tb_address
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Example_Where_Clause" />
     </if>
   </select>
-  <update id="updateByExampleSelective" parameterType="map">
+  <update id="updateByExampleSelective" parameterType="map" >
     update tb_address
-    <set>
-      <if test="record.id != null">
+    <set >
+      <if test="record.id != null" >
         id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.globalId != null">
+      <if test="record.globalId != null" >
         global_id = #{record.globalId,jdbcType=BIGINT},
       </if>
-      <if test="record.userId != null">
+      <if test="record.userId != null" >
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
-      <if test="record.address != null">
+      <if test="record.address != null" >
         address = #{record.address,jdbcType=VARCHAR},
       </if>
-      <if test="record.phonenum != null">
+      <if test="record.phonenum != null" >
         phonenum = #{record.phonenum,jdbcType=VARCHAR},
       </if>
-      <if test="record.email != null">
+      <if test="record.email != null" >
         email = #{record.email,jdbcType=VARCHAR},
       </if>
     </set>
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
+  <update id="updateByExample" parameterType="map" >
     update tb_address
     set id = #{record.id,jdbcType=INTEGER},
       global_id = #{record.globalId,jdbcType=BIGINT},
@@ -193,258 +193,32 @@
       address = #{record.address,jdbcType=VARCHAR},
       phonenum = #{record.phonenum,jdbcType=VARCHAR},
       email = #{record.email,jdbcType=VARCHAR}
-    <if test="_parameter != null">
+    <if test="_parameter != null" >
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shop.email.entity.Address">
+  <update id="updateByPrimaryKeySelective" parameterType="com.shop.email.entity.Address" >
     update tb_address
-    <set>
-      <if test="globalId != null">
+    <set >
+      <if test="globalId != null" >
         global_id = #{globalId,jdbcType=BIGINT},
       </if>
-      <if test="userId != null">
+      <if test="userId != null" >
         user_id = #{userId,jdbcType=INTEGER},
       </if>
-      <if test="address != null">
+      <if test="address != null" >
         address = #{address,jdbcType=VARCHAR},
       </if>
-      <if test="phonenum != null">
+      <if test="phonenum != null" >
         phonenum = #{phonenum,jdbcType=VARCHAR},
       </if>
-      <if test="email != null">
+      <if test="email != null" >
         email = #{email,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.shop.email.entity.Address">
-    update tb_address
-    set global_id = #{globalId,jdbcType=BIGINT},
-      user_id = #{userId,jdbcType=INTEGER},
-      address = #{address,jdbcType=VARCHAR},
-      phonenum = #{phonenum,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <resultMap id="BaseResultMap" type="com.shop.email.entity.Address">
-    <constructor>
-      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="global_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-      <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="address" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="phonenum" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="email" javaType="java.lang.String" jdbcType="VARCHAR" />
-    </constructor>
-  </resultMap>
-  <sql id="Example_Where_Clause">
-    <where>
-      <foreach collection="oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Update_By_Example_Where_Clause">
-    <where>
-      <foreach collection="example.oredCriteria" item="criteria" separator="or">
-        <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-            <foreach collection="criteria.criteria" item="criterion">
-              <choose>
-                <when test="criterion.noValue">
-                  and ${criterion.condition}
-                </when>
-                <when test="criterion.singleValue">
-                  and ${criterion.condition} #{criterion.value}
-                </when>
-                <when test="criterion.betweenValue">
-                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
-                </when>
-                <when test="criterion.listValue">
-                  and ${criterion.condition}
-                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                    #{listItem}
-                  </foreach>
-                </when>
-              </choose>
-            </foreach>
-          </trim>
-        </if>
-      </foreach>
-    </where>
-  </sql>
-  <sql id="Base_Column_List">
-    id, global_id, user_id, address, phonenum, email
-  </sql>
-  <select id="selectByExample" parameterType="com.shop.email.entity.AddressExample" resultMap="BaseResultMap">
-    select
-    <if test="distinct">
-      distinct
-    </if>
-    <include refid="Base_Column_List" />
-    from tb_address
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-    <if test="orderByClause != null">
-      order by ${orderByClause}
-    </if>
-  </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from tb_address
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from tb_address
-    where id = #{id,jdbcType=INTEGER}
-  </delete>
-  <delete id="deleteByExample" parameterType="com.shop.email.entity.AddressExample">
-    delete from tb_address
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </delete>
-  <insert id="insert" parameterType="com.shop.email.entity.Address">
-    insert into tb_address (id, global_id, user_id, 
-      address, phonenum, email
-      )
-    values (#{id,jdbcType=INTEGER}, #{globalId,jdbcType=BIGINT}, #{userId,jdbcType=INTEGER}, 
-      #{address,jdbcType=VARCHAR}, #{phonenum,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}
-      )
-  </insert>
-  <insert id="insertSelective" parameterType="com.shop.email.entity.Address">
-    insert into tb_address
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="globalId != null">
-        global_id,
-      </if>
-      <if test="userId != null">
-        user_id,
-      </if>
-      <if test="address != null">
-        address,
-      </if>
-      <if test="phonenum != null">
-        phonenum,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="globalId != null">
-        #{globalId,jdbcType=BIGINT},
-      </if>
-      <if test="userId != null">
-        #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="address != null">
-        #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="phonenum != null">
-        #{phonenum,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <select id="countByExample" parameterType="com.shop.email.entity.AddressExample" resultType="java.lang.Integer">
-    select count(*) from tb_address
-    <if test="_parameter != null">
-      <include refid="Example_Where_Clause" />
-    </if>
-  </select>
-  <update id="updateByExampleSelective" parameterType="map">
-    update tb_address
-    <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
-      </if>
-      <if test="record.globalId != null">
-        global_id = #{record.globalId,jdbcType=BIGINT},
-      </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
-      </if>
-      <if test="record.address != null">
-        address = #{record.address,jdbcType=VARCHAR},
-      </if>
-      <if test="record.phonenum != null">
-        phonenum = #{record.phonenum,jdbcType=VARCHAR},
-      </if>
-      <if test="record.email != null">
-        email = #{record.email,jdbcType=VARCHAR},
-      </if>
-    </set>
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByExample" parameterType="map">
-    update tb_address
-    set id = #{record.id,jdbcType=INTEGER},
-      global_id = #{record.globalId,jdbcType=BIGINT},
-      user_id = #{record.userId,jdbcType=INTEGER},
-      address = #{record.address,jdbcType=VARCHAR},
-      phonenum = #{record.phonenum,jdbcType=VARCHAR},
-      email = #{record.email,jdbcType=VARCHAR}
-    <if test="_parameter != null">
-      <include refid="Update_By_Example_Where_Clause" />
-    </if>
-  </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.shop.email.entity.Address">
-    update tb_address
-    <set>
-      <if test="globalId != null">
-        global_id = #{globalId,jdbcType=BIGINT},
-      </if>
-      <if test="userId != null">
-        user_id = #{userId,jdbcType=INTEGER},
-      </if>
-      <if test="address != null">
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="phonenum != null">
-        phonenum = #{phonenum,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        email = #{email,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.shop.email.entity.Address">
+  <update id="updateByPrimaryKey" parameterType="com.shop.email.entity.Address" >
     update tb_address
     set global_id = #{globalId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=INTEGER},

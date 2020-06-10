@@ -17,7 +17,7 @@ public class CommentsServiceImpl implements CommentsService {
     @Autowired
     UidService uidService;
 
-    public String insert(Integer id, int goodsId, int replayId, String data) throws FallbackException {
+    public String insert(Integer id, int goodsId, String replayId, String data) throws FallbackException {
         System.out.println(uidService.getUid());
         Comments comments = new Comments(null, (Long) uidService.getUid(), id, goodsId, replayId, data);
         return commentsDao.insert(comments);

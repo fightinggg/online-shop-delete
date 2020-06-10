@@ -1,6 +1,7 @@
 package com.shop.goods.service.impl;
 
 import com.shop.common.MyUtils;
+import com.shop.common.annotation.enable.EnableUidServiceFeignAutoConfiguration;
 import com.shop.common.exception.FallbackException;
 import com.shop.common.exception.NoAuthorityException;
 import com.shop.common.exception.NoFoundException;
@@ -22,6 +23,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@EnableUidServiceFeignAutoConfiguration
 public class GoodsServiceImpl implements GoodsService {
     @Autowired
     GoodsDao goodsDao;

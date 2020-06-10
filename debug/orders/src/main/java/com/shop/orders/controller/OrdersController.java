@@ -18,7 +18,7 @@ public class OrdersController {
     OrdersService ordersService;
 
     // 添加订单
-    @PostMapping("/")
+    @PostMapping(value = "/", produces = "application/json;charset=utf-8")
     @ResponseEncode
     public Object post(@RequestHeader int id, @RequestBody Orders orders) throws FallbackException {
         log.info("用户{}添加了订单{}", id, orders);
@@ -26,7 +26,7 @@ public class OrdersController {
     }
 
     // 取消订单
-    @DeleteMapping("/{ordersId}")
+    @DeleteMapping(value = "/{ordersId}", produces = "application/json;charset=utf-8")
     @ResponseEncode
     public Object delete(@RequestHeader int id, @PathVariable int ordersId) throws NoAuthorityException, NoFoundException {
         log.info("用户{}取消了订单{}", id, ordersId);
@@ -34,7 +34,7 @@ public class OrdersController {
     }
 
     // 完成订单
-    @PutMapping("buyer/{buyerId}/{ordersId}/successed")
+    @PutMapping(value = "/successed/{ordersId}", produces = "application/json;charset=utf-8")
     @ResponseEncode
     public Object successed(@RequestHeader int id, @PathVariable int ordersId) {
         log.info("用户{}完成了订单{}", id, ordersId);
@@ -42,10 +42,12 @@ public class OrdersController {
     }
 
     // 查看订单
-    @GetMapping("/")
+    @GetMapping(value = "/{pageBegin}/{perPage}", produces = "application/json;charset=utf-8")
     @ResponseEncode
-    public Object get(@RequestHeader int id) {
+    public Object get(@RequestHeader int id,
+                      @PathVariable int pageBegin,
+                      @PathVariable int perPage) {
         log.info("用户{}查看了自己的订单", id);
-        return ordersService.get(id);
+        return ordersService.get(id,pageBegin,perPage);
     }
 }

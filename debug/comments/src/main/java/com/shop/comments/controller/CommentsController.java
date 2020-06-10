@@ -29,7 +29,7 @@ public class CommentsController {
     @ResponseEncode
     public Object insert(@RequestHeader Integer id,
                          @PathVariable("goodsId") int goodsId,
-                         @PathVariable("replayId") int replayId,
+                         @PathVariable("replayId") String replayId,
                          @RequestBody String data) throws FallbackException {
         String commentsId = commentsService.insert(id, goodsId, replayId, data);
         log.info("用户{}评论了商品{},回复了{},评论是{}", id, goodsId, replayId, commentsId);

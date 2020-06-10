@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.shop.orders.dao.OrdersDao">
-    <resultMap id="BaseResultMap" type="com.shop.orders.entity.Goods">
+    <resultMap id="BaseResultMap" type="com.shop.orders.entity.Orders">
         <constructor>
-            <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-            <arg column="global_id" javaType="java.lang.Long" jdbcType="BIGINT" />
-            <arg column="user_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-            <arg column="price" javaType="java.lang.Integer" jdbcType="INTEGER" />
-            <arg column="category" javaType="java.lang.String" jdbcType="VARCHAR" />
-            <arg column="all_size" javaType="java.lang.Integer" jdbcType="INTEGER" />
-            <arg column="mainURL" javaType="java.lang.String" jdbcType="VARCHAR" />
-            <arg column="main_describe" javaType="java.lang.String" jdbcType="VARCHAR" />
-            <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="global_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+            <arg column="buyer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="seller_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="goods_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="price" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="counts" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="address_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+            <arg column="buyer_submit" jdbcType="BIT" javaType="java.lang.Boolean" />
+            <arg column="seller_submit" jdbcType="BIT" javaType="java.lang.Boolean" />
         </constructor>
     </resultMap>
     <select id="selectBySellerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select *
         from tb_orders
-        where tb_orders.sellerId = #{sellerId}
+        where tb_orders.seller_id = #{sellerId}
     </select>
     <select id="selectByBuyerId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select *
         from tb_orders
-        where tb_orders.buyerId = #{buyerId}
+        where tb_orders.buyer_id = #{buyerId}
+        limit #{pageBegin},#{perPage}
     </select>
     <select id="selectByGlobalId" resultType="com.shop.orders.entity.Orders">
         select *

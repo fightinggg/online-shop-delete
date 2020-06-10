@@ -1,5 +1,6 @@
 package com.shop.file.service.impl;
 
+import com.shop.common.annotation.enable.EnableUidServiceFeignAutoConfiguration;
 import com.shop.common.exception.NoAuthorityException;
 import com.shop.common.service.UidService;
 import com.shop.file.dao.FileDao;
@@ -13,6 +14,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 @Service
+@EnableUidServiceFeignAutoConfiguration
 public class FileServiceImpl implements FileService {
     @Autowired
     FileDao fileDao;

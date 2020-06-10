@@ -7,7 +7,7 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="mongodb_remote" uuid="f7ea3dc3-435d-4dfd-bf60-6568e9d97f10">
+    <data-source source="LOCAL" name="mongodb" uuid="f7ea3dc3-435d-4dfd-bf60-6568e9d97f10">
       <driver-ref>mongo</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>

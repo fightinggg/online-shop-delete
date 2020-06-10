@@ -2,26 +2,33 @@ package com.shop.gateway.config;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.shop.common.ResponseJSON;
+import com.shop.common.StateCode;
 import com.shop.gateway.dao.RoleUrlDao;
 import com.shop.gateway.dao.UserDao;
 import com.shop.gateway.dao.UserRoleDao;
 import org.bouncycastle.util.Strings;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.buffer.DataBuffer;
-import org.springframework.core.io.buffer.DataBufferUtils;
+import org.springframework.core.io.buffer.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.http.server.reactive.ServerHttpResponseDecorator;
+import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.ReactiveSecurityContextHolder;
@@ -32,17 +39,26 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.header.HeaderWriterFilter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.security.web.server.ServerAuthenticationEntryPoint;
 import org.springframework.security.web.server.WebFilterExchange;
 import org.springframework.security.web.server.authentication.logout.ServerLogoutSuccessHandler;
+import org.springframework.security.web.session.ConcurrentSessionFilter;
+import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsWebFilter;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.server.WebSession;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.NonBlocking;
 
 import javax.swing.text.html.parser.Entity;
 import java.lang.reflect.Field;
@@ -50,9 +66,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.Principal;
 import java.util.*;
+import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 
 @Configuration
@@ -112,10 +130,22 @@ public class WebSecurityConfig {
         return response.writeWith(Mono.just(bodyDataBuffer));
     }
 
+    @Bean
+    public CorsWebFilter corsWebFilter(){
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedMethod("*");
+        corsConfiguration.addAllowedHeader("*");
+        corsConfiguration.addAllowedOrigin("*");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**",corsConfiguration);
+        return new CorsWebFilter(source);
+    }
+
 
     @Bean
     public SecurityWebFilterChain configure(ServerHttpSecurity http) {
-        http.csrf().disable();//必须支持跨域
+        http.cors().disable();
+        http.csrf().disable();
         http.formLogin()
                 .authenticationSuccessHandler((webFilterExchange, authentication) -> returnMsg(webFilterExchange, "登陆成功"))
                 .authenticationFailureHandler((webFilterExchange, exception) -> returnMsg(webFilterExchange, "登陆失败"));
@@ -136,22 +166,36 @@ public class WebSecurityConfig {
                 if (pattern.matcher(url).matches()) break;
                 else preUrl.append(url).append("/");
             }
-            List<String> strings = roleUrlDao.selectRoleByUrl(preUrl.toString());
-            System.out.println(httpRequest.getURI() + "    " + preUrl + "    " + strings);
+            List<String> needRoles = roleUrlDao.selectRoleByUrl(preUrl.toString());
 
-            if (strings.isEmpty()) return Mono.just(new AuthorizationDecision(false));
-            else if (strings.contains("ROLE_TOURIST")) return Mono.just(new AuthorizationDecision(true));
-            else return authentication
-                        .flatMapIterable(Authentication::getAuthorities)
-                        .map(GrantedAuthority::getAuthority)
-                        .any(strings::contains)
-                        .map(AuthorizationDecision::new)
-                        .defaultIfEmpty(new AuthorizationDecision(false));
+            // toruist资源可被任何人访问
+            if (needRoles.contains("ROLE_TOURIST")) {
+                return Mono.just(new AuthorizationDecision(true));
+            } else {
+                return authentication.map((o) -> {
+                    List<String> haveRoles = o.getAuthorities()
+                            .stream()
+                            .map(GrantedAuthority::getAuthority)
+                            .collect(Collectors.toList());
+                    System.out.println(httpRequest.getURI() + "    " + preUrl + "    " + needRoles + haveRoles);
+                    for (String haveRole : haveRoles) {
+                        // root可访问所有资源
+                        if (haveRole.equals("ROLE_ROOT") || needRoles.contains(haveRole)) {
+                            return new AuthorizationDecision(true);
+                        }
+                    }
+                    return new AuthorizationDecision(false);
+                }).defaultIfEmpty(new AuthorizationDecision(false));
+            }
+
         });
+
 
         // 添加过滤器，
         http.addFilterAt((exchange, chain) -> {
-            String username = exchange.getSession()
+            // TODO BUG ERROR !!!!!!! subscribe is not suteble here
+            System.out.println("at last");
+            exchange.getSession()
                     .map(WebSession::getAttributes)
                     .filter(o -> o.containsKey("SPRING_SECURITY_CONTEXT"))
                     .map(o -> o.get("SPRING_SECURITY_CONTEXT"))
@@ -160,12 +204,27 @@ public class WebSecurityConfig {
                     .map(Authentication::getPrincipal)
                     .cast(UserDetails.class)
                     .map(UserDetails::getUsername)
-                    .block();
-            ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("id", username).build();
-            ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
-            return chain.filter(mutatedExchange);
+                    .doOnSuccess(s -> exchange.getRequest().mutate().header("id", s))
+                    .subscribe();
+            return chain.filter(exchange);
         }, SecurityWebFiltersOrder.LAST);
 
+
+        http.httpBasic().authenticationEntryPoint((exchange, e) -> {
+            exchange.getResponse().setStatusCode(HttpStatus.OK);
+            String json;
+            switch (e.getMessage()) {
+                case "Not Authenticated":
+                    json = ResponseJSON.encode(StateCode.NO_AUTHENTICATED, "没有登陆哦小兄弟！");
+                    break;
+                default:
+                    json = ResponseJSON.encode(StateCode.UNKNOWN_SREVER_ERROR, e.getMessage());
+                    break;
+            }
+            byte[] bytes = json.getBytes();
+            DataBuffer wrap = exchange.getResponse().bufferFactory().wrap(bytes);
+            return exchange.getResponse().writeWith(Flux.just(wrap));
+        });
 
         return http.build();
     }

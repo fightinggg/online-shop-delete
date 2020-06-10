@@ -20,6 +20,8 @@
         <option value="$PROJECT_DIR$/user/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
         <option value="$PROJECT_DIR$/common/pom.xml" />
+        <option value="$PROJECT_DIR$/msg/pom.xml" />
+        <option value="$PROJECT_DIR$/cart/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
