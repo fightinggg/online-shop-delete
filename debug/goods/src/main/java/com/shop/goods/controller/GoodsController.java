@@ -18,7 +18,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 
 @RestController
-//@RequestMapping("/api")
+@RequestMapping("/api")
 @Api(tags = "商品微服务")
 @Slf4j
 @EnableResponseEncodeAutoConfigration

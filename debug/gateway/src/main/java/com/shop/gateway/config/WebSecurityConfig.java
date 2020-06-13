@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.buffer.*;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -50,12 +51,14 @@ import org.springframework.security.web.session.ConcurrentSessionFilter;
 import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsUtils;
 import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 import org.springframework.web.server.WebSession;
+import org.springframework.web.util.pattern.PathPatternParser;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.NonBlocking;
@@ -123,24 +126,25 @@ public class WebSecurityConfig {
         ServerWebExchange exchange = webFilterExchange.getExchange();
         ServerHttpResponse response = exchange.getResponse();
         //设置headers
-        HttpHeaders httpHeaders = response.getHeaders();
-        httpHeaders.add("Content-Type", "application/json; charset=UTF-8");
-        httpHeaders.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        HttpHeaders headers = response.getHeaders();
+        headers.add("Content-Type", "application/json; charset=UTF-8");
+        headers.add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        if (CorsUtils.isCorsRequest(exchange.getRequest())) {
+            System.out.println(exchange.getRequest().getHeaders().getOrigin());
+            headers.set(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, exchange.getRequest().getHeaders().getOrigin());
+            headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*");
+            headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "");
+            headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+            headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "*");
+            headers.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "3600");
+            if (exchange.getRequest().getMethod() == HttpMethod.OPTIONS) {
+                response.setStatusCode(HttpStatus.OK);
+                return Mono.empty();
+            }
+        }
         DataBuffer bodyDataBuffer = response.bufferFactory().wrap(str.getBytes());
         return response.writeWith(Mono.just(bodyDataBuffer));
     }
-
-    @Bean
-    public CorsWebFilter corsWebFilter(){
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedMethod("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedOrigin("*");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**",corsConfiguration);
-        return new CorsWebFilter(source);
-    }
-
 
     @Bean
     public SecurityWebFilterChain configure(ServerHttpSecurity http) {
@@ -152,6 +156,7 @@ public class WebSecurityConfig {
 
         http.logout().
                 logoutUrl("/logout").logoutSuccessHandler((exchange, authentication) -> returnMsg(exchange, "登出成功"));
+
 
         // 定制url匹配规则
         http.authorizeExchange().anyExchange().access((authentication, object) -> {
@@ -191,10 +196,9 @@ public class WebSecurityConfig {
         });
 
 
-        // 添加过滤器，
+        // add id
         http.addFilterAt((exchange, chain) -> {
             // TODO BUG ERROR !!!!!!! subscribe is not suteble here
-            System.out.println("at last");
             exchange.getSession()
                     .map(WebSession::getAttributes)
                     .filter(o -> o.containsKey("SPRING_SECURITY_CONTEXT"))
@@ -208,6 +212,27 @@ public class WebSecurityConfig {
                     .subscribe();
             return chain.filter(exchange);
         }, SecurityWebFiltersOrder.LAST);
+
+        // deal with cors
+        http.addFilterAt((exchange, chain) -> {
+            ServerHttpRequest request = exchange.getRequest();
+            if (CorsUtils.isCorsRequest(request)) {
+                ServerHttpResponse response = exchange.getResponse();
+                HttpHeaders headers = response.getHeaders();
+                System.out.println(request.getHeaders().getOrigin());
+                headers.set(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, request.getHeaders().getOrigin());
+                headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "*");
+                headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "");
+                headers.add(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
+                headers.add(HttpHeaders.ACCESS_CONTROL_EXPOSE_HEADERS, "*");
+                headers.add(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "3600");
+                if (request.getMethod() == HttpMethod.OPTIONS) {
+                    response.setStatusCode(HttpStatus.OK);
+                    return Mono.empty();
+                }
+            }
+            return chain.filter(exchange);
+        }, SecurityWebFiltersOrder.SECURITY_CONTEXT_SERVER_WEB_EXCHANGE);
 
 
         http.httpBasic().authenticationEntryPoint((exchange, e) -> {

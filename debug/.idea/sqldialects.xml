@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/../SQL/shop_WORKER_NODE.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_bankCard.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_comments.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_coupon.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_couponWarehouse.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_favourite.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_global_id.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_permission.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_address.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_email_transaction.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_goods.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_goods_counts.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_integral.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_money.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_orders.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_role.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_role_url.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_shopping_cart.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_url.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_user.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_tb_user_role.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../SQL/shop_v_role_url.sql" dialect="MySQL" />
+  </component>
+</project>

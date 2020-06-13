@@ -31,7 +31,19 @@ spring:
           enabled: true
           # 开启小写路由
           lowerCaseServiceId: true
-
+#      # 跨域
+#      globalcors:
+#        corsConfigurations:
+#          '[/**]':
+#            allowedHeaders: "*"
+#            allowedOrigins: "*"
+#            allowedMethods:
+#              - GET
+#              - POST
+#              - DELETE
+#              - PUT
+#      default-filters:
+#        - DedupeResponseHeader=Access-Control-Allow-Origin, RETAIN_UNIQUE
 
 logging:
   level:
